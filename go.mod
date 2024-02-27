@@ -1,4 +1,4 @@
-module github.com/aiviaio/okex
+module github.com/drinkthere/okx
 
 go 1.17
 
