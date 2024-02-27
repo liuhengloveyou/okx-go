@@ -5,9 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/aiviaio/okex"
-	requests "github.com/aiviaio/okex/requests/rest/subaccount"
-	responses "github.com/aiviaio/okex/responses/sub_account"
+	requests "github.com/drinkthere/okx/requests/rest/subaccount"
+	responses "github.com/drinkthere/okx/responses/sub_account"
 )
 
 // SubAccount

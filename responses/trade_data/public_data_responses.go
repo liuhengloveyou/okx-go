@@ -1,8 +1,8 @@
 package trade_data
 
 import (
-	"github.com/aiviaio/okex/models/tradedata"
-	"github.com/aiviaio/okex/responses"
+	"github.com/drinkthere/okx/models/tradedata"
+	"github.com/drinkthere/okx/responses"
 )
 
 type (

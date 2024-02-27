@@ -1,7 +1,5 @@
 package subaccount
 
-import "github.com/aiviaio/okex"
-
 type (
 	ViewList struct {
 		SubAcct string `json:"subAcct,omitempty"`

@@ -1,7 +1,5 @@
 package tradedata
 
-import "github.com/aiviaio/okex"
-
 type (
 	GetTakerVolume struct {
 		Ccy      string              `json:"ccy"`

@@ -1,7 +1,5 @@
 package market
 
-import "github.com/aiviaio/okex"
-
 type (
 	GetTickers struct {
 		Uly      string              `json:"uly,omitempty"`

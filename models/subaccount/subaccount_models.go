@@ -1,9 +1,5 @@
 package subaccount
 
-import (
-	"github.com/aiviaio/okex"
-)
-
 type (
 	SubAccount struct {
 		SubAcct     string        `json:"subAcct,omitempty"`

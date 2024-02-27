@@ -1,7 +1,5 @@
 package public
 
-import "github.com/aiviaio/okex"
-
 type (
 	GetInstruments struct {
 		Uly      string              `json:"uly,omitempty"`

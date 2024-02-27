@@ -5,9 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/aiviaio/okex"
-	requests "github.com/aiviaio/okex/requests/rest/account"
-	responses "github.com/aiviaio/okex/responses/account"
+	requests "github.com/drinkthere/okx/requests/rest/account"
+	responses "github.com/drinkthere/okx/responses/account"
 )
 
 // Account

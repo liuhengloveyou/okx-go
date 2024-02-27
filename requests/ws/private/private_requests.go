@@ -1,7 +1,5 @@
 package private
 
-import "github.com/aiviaio/okex"
-
 type (
 	Account struct {
 		Ccy string `json:"ccy,omitempty"`

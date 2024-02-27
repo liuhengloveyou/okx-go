@@ -3,10 +3,9 @@ package ws
 import (
 	"encoding/json"
 
-	"github.com/aiviaio/okex"
-	"github.com/aiviaio/okex/events"
-	"github.com/aiviaio/okex/events/private"
-	requests "github.com/aiviaio/okex/requests/ws/private"
+	"github.com/drinkthere/okx/events"
+	"github.com/drinkthere/okx/events/private"
+	requests "github.com/drinkthere/okx/requests/ws/private"
 )
 
 // Private

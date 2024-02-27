@@ -1,9 +1,5 @@
 package publicdata
 
-import (
-	"github.com/aiviaio/okex"
-)
-
 type (
 	Instrument struct {
 		InstID    string               `json:"instId"`

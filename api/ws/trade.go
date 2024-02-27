@@ -1,8 +1,7 @@
 package ws
 
 import (
-	"github.com/aiviaio/okex"
-	requests "github.com/aiviaio/okex/requests/rest/trade"
+	requests "github.com/drinkthere/okx/requests/rest/trade"
 )
 
 // Trade

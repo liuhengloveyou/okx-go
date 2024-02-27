@@ -1,8 +1,8 @@
 package public_data
 
 import (
-	"github.com/aiviaio/okex/models/publicdata"
-	"github.com/aiviaio/okex/responses"
+	"github.com/drinkthere/okx/models/publicdata"
+	"github.com/drinkthere/okx/responses"
 )
 
 type (

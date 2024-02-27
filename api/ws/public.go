@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/aiviaio/okex"
-	"github.com/aiviaio/okex/events"
-	"github.com/aiviaio/okex/events/public"
-	requests "github.com/aiviaio/okex/requests/ws/public"
+	"github.com/drinkthere/okx/events"
+	"github.com/drinkthere/okx/events/public"
+	requests "github.com/drinkthere/okx/requests/ws/public"
 )
 
 // Public

@@ -1,7 +1,5 @@
 package funding
 
-import "github.com/aiviaio/okex"
-
 type (
 	GetBalance struct {
 		Ccy []string `json:"ccy,omitempty"`

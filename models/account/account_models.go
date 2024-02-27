@@ -1,9 +1,5 @@
 package account
 
-import (
-	"github.com/aiviaio/okex"
-)
-
 type (
 	Balance struct {
 		TotalEq     okex.JSONFloat64  `json:"totalEq"`

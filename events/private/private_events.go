@@ -1,9 +1,9 @@
 package private
 
 import (
-	"github.com/aiviaio/okex/events"
-	"github.com/aiviaio/okex/models/account"
-	"github.com/aiviaio/okex/models/trade"
+	"github.com/drinkthere/okx/events"
+	"github.com/drinkthere/okx/models/account"
+	"github.com/drinkthere/okx/models/trade"
 )
 
 type (

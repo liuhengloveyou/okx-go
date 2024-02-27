@@ -1,9 +1,5 @@
 package trade
 
-import (
-	"github.com/aiviaio/okex"
-)
-
 type (
 	PlaceOrder struct {
 		OrdID   string         `json:"ordId"`

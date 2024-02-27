@@ -2,8 +2,6 @@ package events
 
 import (
 	"encoding/json"
-
-	"github.com/aiviaio/okex"
 )
 
 type (

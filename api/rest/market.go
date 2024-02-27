@@ -4,9 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/aiviaio/okex"
-	requests "github.com/aiviaio/okex/requests/rest/market"
-	responses "github.com/aiviaio/okex/responses/market"
+	requests "github.com/drinkthere/okx/requests/rest/market"
+	responses "github.com/drinkthere/okx/responses/market"
 )
 
 // Market

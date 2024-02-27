@@ -1,7 +1,5 @@
 package funding
 
-import "github.com/aiviaio/okex"
-
 type (
 	Currency struct {
 		Ccy               string `json:"ccy"`

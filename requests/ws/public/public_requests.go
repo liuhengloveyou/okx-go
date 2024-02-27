@@ -1,7 +1,5 @@
 package public
 
-import "github.com/aiviaio/okex"
-
 type (
 	Instruments struct {
 		InstType okex.InstrumentType `json:"instType"`

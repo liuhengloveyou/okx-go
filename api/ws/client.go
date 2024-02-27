@@ -11,8 +11,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/aiviaio/okex"
-	"github.com/aiviaio/okex/events"
+	"github.com/drinkthere/okx/events"
 	"github.com/gorilla/websocket"
 )
 

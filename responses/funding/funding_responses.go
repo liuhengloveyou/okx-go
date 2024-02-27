@@ -1,8 +1,8 @@
 package funding
 
 import (
-	models "github.com/aiviaio/okex/models/funding"
-	"github.com/aiviaio/okex/responses"
+	models "github.com/drinkthere/okx/models/funding"
+	"github.com/drinkthere/okx/responses"
 )
 
 type (

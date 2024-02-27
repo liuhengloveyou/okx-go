@@ -1,8 +1,8 @@
 package market
 
 import (
-	"github.com/aiviaio/okex/models/market"
-	"github.com/aiviaio/okex/responses"
+	"github.com/drinkthere/okx/models/market"
+	"github.com/drinkthere/okx/responses"
 )
 
 type (

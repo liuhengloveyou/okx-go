@@ -3,9 +3,8 @@ package api
 import (
 	"context"
 
-	"github.com/aiviaio/okex"
-	"github.com/aiviaio/okex/api/rest"
-	"github.com/aiviaio/okex/api/ws"
+	"github.com/drinkthere/okx/api/rest"
+	"github.com/drinkthere/okx/api/ws"
 )
 
 // Client is the main api wrapper of okex

@@ -11,9 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aiviaio/okex"
-	requests "github.com/aiviaio/okex/requests/rest/public"
-	responses "github.com/aiviaio/okex/responses/public_data"
+	requests "github.com/drinkthere/okx/requests/rest/public"
+	responses "github.com/drinkthere/okx/responses/public_data"
 )
 
 // ClientRest is the rest api client

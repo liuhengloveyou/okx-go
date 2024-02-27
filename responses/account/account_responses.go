@@ -1,8 +1,8 @@
 package account
 
 import (
-	models "github.com/aiviaio/okex/models/account"
-	"github.com/aiviaio/okex/responses"
+	models "github.com/drinkthere/okx/models/account"
+	"github.com/drinkthere/okx/responses"
 )
 
 type (

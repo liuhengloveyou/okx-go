@@ -1,9 +1,9 @@
 package public
 
 import (
-	"github.com/aiviaio/okex/events"
-	"github.com/aiviaio/okex/models/market"
-	"github.com/aiviaio/okex/models/publicdata"
+	"github.com/drinkthere/okx/events"
+	"github.com/drinkthere/okx/models/market"
+	"github.com/drinkthere/okx/models/publicdata"
 )
 
 type (

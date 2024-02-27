@@ -1,9 +1,9 @@
 package sub_account
 
 import (
-	"github.com/aiviaio/okex/models/account"
-	models "github.com/aiviaio/okex/models/subaccount"
-	"github.com/aiviaio/okex/responses"
+	"github.com/drinkthere/okx/models/account"
+	models "github.com/drinkthere/okx/models/subaccount"
+	"github.com/drinkthere/okx/responses"
 )
 
 type (
