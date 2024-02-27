@@ -1,25 +1,25 @@
-okex
+okx
 ====
-[![Go Reference](https://pkg.go.dev/badge/github.com/aiviaio/okex.svg)](https://pkg.go.dev/github.com/aiviaio/okex)
-[![GitHub go.mod Go version of a Go module](https://img.shields.io/github/go-mod/go-version/aiviaio/okex.svg)](https://github.com/aiviaio/okex)
-[![GoReportCard example](https://goreportcard.com/badge/github.com/aiviaio/okex)](https://goreportcard.com/report/github.com/aiviaio/okex)
-[![GitHub license](https://img.shields.io/github/license/aiviaio/okex.svg)](https://github.com/aiviaio/okex/blob/main/LICENSE)
-[![GitHub release](https://img.shields.io/github/release/aiviaio/okex.svg)](https://GitHub.com/aiviaio/okex/releases/)
+[![Go Reference](https://pkg.go.dev/badge/github.com/aiviaio/okx.svg)](https://pkg.go.dev/github.com/aiviaio/okx)
+[![GitHub go.mod Go version of a Go module](https://img.shields.io/github/go-mod/go-version/aiviaio/okx.svg)](https://github.com/aiviaio/okx)
+[![GoReportCard example](https://goreportcard.com/badge/github.com/aiviaio/okx)](https://goreportcard.com/report/github.com/aiviaio/okx)
+[![GitHub license](https://img.shields.io/github/license/aiviaio/okx.svg)](https://github.com/aiviaio/okx/blob/main/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/aiviaio/okx.svg)](https://GitHub.com/aiviaio/okx/releases/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 *NOTICE:*
 > PACKAGE IS CURRENTLY UNDER HEAVY DEVELOPMENT AND THERE IS NO GUARANTY FOR STABILITY UNTIL V1 RELEASE.
 
-Okex V5 Golang API
+okx V5 Golang API
 
-A complete golang wrapper for [Okex](https://www.okex.com) V5 API. Pretty simple and easy to use. For more info about
-Okex V5 API [read here](https://www.okex.com/docs-v5/en).
+A complete golang wrapper for [okx](https://www.okx.com) V5 API. Pretty simple and easy to use. For more info about
+okx V5 API [read here](https://www.okx.com/docs-v5/en).
 
 Installation
 -----------------
 
 ```bash
-go get github.com/drinkthere/okex@v1.0.3
+go get github.com/drinkthere/okx@v1.0.4
 ```
 
 Usage
@@ -30,12 +30,12 @@ package main
 
 import (
 	"context"
-	"github.com/aiviaio/okex"
-	"github.com/aiviaio/okex/api"
-	"github.com/aiviaio/okex/events"
-	"github.com/aiviaio/okex/events/private"
-	ws_private_requests "github.com/aiviaio/okex/requests/ws/private"
-	ws_public_requests "github.com/aiviaio/okex/requests/ws/public"
+	"github.com/aiviaio/okx"
+	"github.com/aiviaio/okx/api"
+	"github.com/aiviaio/okx/events"
+	"github.com/aiviaio/okx/events/private"
+	ws_private_requests "github.com/aiviaio/okx/requests/ws/private"
+	ws_public_requests "github.com/aiviaio/okx/requests/ws/public"
 	"log"
 )
 
@@ -43,7 +43,7 @@ func main() {
 	apiKey := "YOUR-API-KEY"
 	secretKey := "YOUR-SECRET-KEY"
 	passphrase := "YOUR-PASS-PHRASE"
-	dest := okex.NormalServer // The main API server
+	dest := okx.NormalServer // The main API server
 	ctx := context.Background()
 	client, err := api.NewClient(ctx, apiKey, secretKey, passphrase, &dest)
 	if err != nil {
@@ -69,7 +69,7 @@ func main() {
 	// subscribe into orders private channel
 	// it will do the login process and wait until authorization confirmed
 	err = client.Ws.Private.Order(ws_private_requests.Order{
-		InstType: okex.SwapInstrument,
+		InstType: okx.SwapInstrument,
 	}, oCh)
 	if err != nil {
 		log.Fatalln(err)
@@ -78,7 +78,7 @@ func main() {
 	// subscribe into instruments public channel
 	// it doesn't need any authorization
 	err = client.Ws.Public.Instruments(ws_public_requests.Instruments{
-		InstType: okex.SwapInstrument,
+		InstType: okx.SwapInstrument,
 	}, iCh)
 	if err != nil {
 		log.Fatalln("Instruments", err)
@@ -131,22 +131,22 @@ func main() {
 Supporting APIs
 ---------------
 
-* [Rest](https://www.okex.com/docs-v5/en/#rest-api)
-    * [Trade](https://www.okex.com/docs-v5/en/#rest-api-trade) (except demo special trading endpoints)
-    * [Funding](https://www.okex.com/docs-v5/en/#rest-api-funding)
-    * [Account](https://www.okex.com/docs-v5/en/#rest-api-account)
-    * [SubAccount](https://www.okex.com/docs-v5/en/#rest-api-subaccount)
-    * [Market Data](https://www.okex.com/docs-v5/en/#rest-api-market-data)
-    * [Public Data](https://www.okex.com/docs-v5/en/#rest-api-public-data)
-    * [Trading Data](https://www.okex.com/docs-v5/en/#rest-api-trading-data)
+* [Rest](https://www.okx.com/docs-v5/en/#rest-api)
+    * [Trade](https://www.okx.com/docs-v5/en/#rest-api-trade) (except demo special trading endpoints)
+    * [Funding](https://www.okx.com/docs-v5/en/#rest-api-funding)
+    * [Account](https://www.okx.com/docs-v5/en/#rest-api-account)
+    * [SubAccount](https://www.okx.com/docs-v5/en/#rest-api-subaccount)
+    * [Market Data](https://www.okx.com/docs-v5/en/#rest-api-market-data)
+    * [Public Data](https://www.okx.com/docs-v5/en/#rest-api-public-data)
+    * [Trading Data](https://www.okx.com/docs-v5/en/#rest-api-trading-data)
 
-[comment]: <> (    * [Status]&#40;https://www.okex.com/docs-v5/en/#rest-api-status&#41;)
+[comment]: <> (    * [Status]&#40;https://www.okx.com/docs-v5/en/#rest-api-status&#41;)
 
-* [Ws](https://www.okex.com/docs-v5/en/#websocket-api)
-    * [Private Channel](https://www.okex.com/docs-v5/en/#websocket-api-private-channel) (except demo special trading
+* [Ws](https://www.okx.com/docs-v5/en/#websocket-api)
+    * [Private Channel](https://www.okx.com/docs-v5/en/#websocket-api-private-channel) (except demo special trading
       endpoints)
-    * [Public Channel](https://www.okex.com/docs-v5/en/#websocket-api-public-channels)
-    * [Trade](https://www.okex.com/docs-v5/en/#websocket-api-trade)
+    * [Public Channel](https://www.okx.com/docs-v5/en/#websocket-api-public-channels)
+    * [Trade](https://www.okx.com/docs-v5/en/#websocket-api-trade)
 
 Features
 --------
@@ -157,4 +157,4 @@ Features
 * Fully automated authorization steps for both [REST](/api/rest) and [WS](/api/ws)
 * To receive websocket events you can choose [RawEventChan](/api/ws/client.go#L25)
   , [StructuredEventChan](/api/ws/client.go#L28), or provide your own
-  channels. [More info](https://github.com/aiviaio/okex/wiki/Handling-WS-events) 
+  channels. [More info](https://github.com/aiviaio/okx/wiki/Handling-WS-events) 

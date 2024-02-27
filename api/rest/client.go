@@ -27,13 +27,13 @@ type ClientRest struct {
 	apiKey      string
 	secretKey   []byte
 	passphrase  string
-	destination okex.Destination
-	baseURL     okex.BaseURL
+	destination okx.Destination
+	baseURL     okx.BaseURL
 	Client      *http.Client
 }
 
 // NewClient returns a pointer to a fresh ClientRest
-func NewClient(apiKey, secretKey, passphrase string, baseURL okex.BaseURL, destination okex.Destination) *ClientRest {
+func NewClient(apiKey, secretKey, passphrase string, baseURL okx.BaseURL, destination okx.Destination) *ClientRest {
 	c := &ClientRest{
 		apiKey:      apiKey,
 		secretKey:   []byte(secretKey),
@@ -102,7 +102,7 @@ func (c *ClientRest) Do(method, path string, private bool, params ...map[string]
 		r.Header.Add("OK-ACCESS-SIGN", sign)
 		r.Header.Add("OK-ACCESS-TIMESTAMP", timestamp)
 	}
-	if c.destination == okex.DemoServer {
+	if c.destination == okx.DemoServer {
 		r.Header.Add("x-simulated-trading", "1")
 	}
 	return c.Client.Do(r)
@@ -143,7 +143,7 @@ func (c *ClientRest) DoBatch(path string, params interface{}) (*http.Response, e
 	r.Header.Add("OK-ACCESS-SIGN", sign)
 	r.Header.Add("OK-ACCESS-TIMESTAMP", timestamp)
 
-	if c.destination == okex.DemoServer {
+	if c.destination == okx.DemoServer {
 		r.Header.Add("x-simulated-trading", "1")
 	}
 	return c.Client.Do(r)
@@ -152,10 +152,10 @@ func (c *ClientRest) DoBatch(path string, params interface{}) (*http.Response, e
 // Status
 // Get event status of system upgrade
 //
-// https://www.okex.com/docs-v5/en/#rest-api-status
+// https://www.okx.com/docs-v5/en/#rest-api-status
 func (c *ClientRest) Status(req requests.Status) (response responses.Status, err error) {
 	p := "/api/v5/system/status"
-	m := okex.S2M(req)
+	m := okx.S2M(req)
 	res, err := c.Do(http.MethodGet, p, false, m)
 	if err != nil {
 		return

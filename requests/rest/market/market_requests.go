@@ -2,8 +2,8 @@ package market
 
 type (
 	GetTickers struct {
-		Uly      string              `json:"uly,omitempty"`
-		InstType okex.InstrumentType `json:"instType"`
+		Uly      string             `json:"uly,omitempty"`
+		InstType okx.InstrumentType `json:"instType"`
 	}
 	GetTicker struct {
 		InstId string `json:"instId"`
@@ -17,18 +17,18 @@ type (
 		Sz     int    `json:"sz,omitempty,string"`
 	}
 	GetCandlesticks struct {
-		InstID string       `json:"instId"`
-		Bar    okex.BarSize `json:"bar,omitempty"`
-		After  int64        `json:"after,omitempty,string"`
-		Before int64        `json:"before,omitempty,string"`
-		Limit  int64        `json:"limit,omitempty,string"`
+		InstID string      `json:"instId"`
+		Bar    okx.BarSize `json:"bar,omitempty"`
+		After  int64       `json:"after,omitempty,string"`
+		Before int64       `json:"before,omitempty,string"`
+		Limit  int64       `json:"limit,omitempty,string"`
 	}
 	Candlesticks struct {
-		InstID string       `json:"instId"`
-		Bar    okex.BarSize `json:"bar,omitempty"`
-		After  int64        `json:"after,omitempty,string"`
-		Before int64        `json:"before,omitempty,string"`
-		Limit  int64        `json:"limit,omitempty,string"`
+		InstID string      `json:"instId"`
+		Bar    okx.BarSize `json:"bar,omitempty"`
+		After  int64       `json:"after,omitempty,string"`
+		Before int64       `json:"before,omitempty,string"`
+		Limit  int64       `json:"limit,omitempty,string"`
 	}
 	GetTrades struct {
 		InstID string `json:"instId"`

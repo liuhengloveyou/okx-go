@@ -17,9 +17,9 @@ import (
 
 // ClientWs is the websocket api client
 //
-// https://www.okex.com/docs-v5/en/#websocket-api
+// https://www.okx.com/docs-v5/en/#websocket-api
 type ClientWs struct {
-	url           map[bool]okex.BaseURL
+	url           map[bool]okx.BaseURL
 	apiKey        string
 	secretKey     []byte
 	passphrase    string
@@ -50,7 +50,7 @@ const (
 )
 
 // NewClient returns a pointer to a fresh ClientWs
-func NewClient(ctx context.Context, apiKey, secretKey, passphrase string, url map[bool]okex.BaseURL) *ClientWs {
+func NewClient(ctx context.Context, apiKey, secretKey, passphrase string, url map[bool]okx.BaseURL) *ClientWs {
 	ctx, cancel := context.WithCancel(ctx)
 	c := &ClientWs{
 		url:          url,
@@ -75,7 +75,7 @@ func NewClient(ctx context.Context, apiKey, secretKey, passphrase string, url ma
 
 // Connect into the server
 //
-// https://www.okex.com/docs-v5/en/#websocket-api-connect
+// https://www.okx.com/docs-v5/en/#websocket-api-connect
 func (c *ClientWs) Connect(p bool) error {
 	if c.conn[p] != nil {
 		return nil
@@ -104,7 +104,7 @@ func (c *ClientWs) Connect(p bool) error {
 
 // Login
 //
-// https://www.okex.com/docs-v5/en/#websocket-api-login
+// https://www.okx.com/docs-v5/en/#websocket-api-login
 func (c *ClientWs) Login() error {
 	if c.Authorized {
 		return nil
@@ -128,14 +128,14 @@ func (c *ClientWs) Login() error {
 		},
 	}
 
-	return c.Send(true, okex.LoginOperation, args)
+	return c.Send(true, okx.LoginOperation, args)
 }
 
 // Subscribe
 // Users can choose to subscribe to one or more channels, and the total length of multiple channels cannot exceed 4096 bytes.
 //
-// https://www.okex.com/docs-v5/en/#websocket-api-subscribe
-func (c *ClientWs) Subscribe(p bool, ch []okex.ChannelName, args map[string]string) error {
+// https://www.okx.com/docs-v5/en/#websocket-api-subscribe
+func (c *ClientWs) Subscribe(p bool, ch []okx.ChannelName, args map[string]string) error {
 	count := 1
 	if len(ch) != 0 {
 		count = len(ch)
@@ -152,13 +152,13 @@ func (c *ClientWs) Subscribe(p bool, ch []okex.ChannelName, args map[string]stri
 		}
 	}
 
-	return c.Send(p, okex.SubscribeOperation, tmpArgs)
+	return c.Send(p, okx.SubscribeOperation, tmpArgs)
 }
 
 // Unsubscribe into channel(s)
 //
-// https://www.okex.com/docs-v5/en/#websocket-api-unsubscribe
-func (c *ClientWs) Unsubscribe(p bool, ch []okex.ChannelName, args map[string]string) error {
+// https://www.okx.com/docs-v5/en/#websocket-api-unsubscribe
+func (c *ClientWs) Unsubscribe(p bool, ch []okx.ChannelName, args map[string]string) error {
 	tmpArgs := make([]map[string]string, len(ch))
 	for i, name := range ch {
 		tmpArgs[i] = make(map[string]string)
@@ -168,12 +168,12 @@ func (c *ClientWs) Unsubscribe(p bool, ch []okex.ChannelName, args map[string]st
 		}
 	}
 
-	return c.Send(p, okex.UnsubscribeOperation, tmpArgs)
+	return c.Send(p, okx.UnsubscribeOperation, tmpArgs)
 }
 
 // Send message through either connections
-func (c *ClientWs) Send(p bool, op okex.Operation, args []map[string]string, extras ...map[string]string) error {
-	if op != okex.LoginOperation {
+func (c *ClientWs) Send(p bool, op okx.Operation, args []map[string]string, extras ...map[string]string) error {
+	if op != okx.LoginOperation {
 		err := c.Connect(p)
 		if err == nil {
 			if p {

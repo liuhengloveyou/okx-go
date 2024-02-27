@@ -9,19 +9,19 @@ type (
 		Limit   int64  `json:"limit,omitempty,string"`
 	}
 	CreateAPIKey struct {
-		Pwd        string            `json:"pwd"`
-		SubAcct    string            `json:"subAcct"`
-		Label      string            `json:"label"`
-		Passphrase string            `json:"Passphrase"`
-		IP         []string          `json:"ip,omitempty"`
-		Perm       okex.APIKeyAccess `json:"perm,omitempty"`
+		Pwd        string           `json:"pwd"`
+		SubAcct    string           `json:"subAcct"`
+		Label      string           `json:"label"`
+		Passphrase string           `json:"Passphrase"`
+		IP         []string         `json:"ip,omitempty"`
+		Perm       okx.APIKeyAccess `json:"perm,omitempty"`
 	}
 	ResetAPIKey struct {
-		SubAcct string            `json:"subAcct"`
-		ApiKey  string            `json:"apiKey"`
-		Label   string            `json:"label"`
-		IP      []string          `json:"ip,omitempty"`
-		Perm    okex.APIKeyAccess `json:"perm,omitempty"`
+		SubAcct string           `json:"subAcct"`
+		ApiKey  string           `json:"apiKey"`
+		Label   string           `json:"label"`
+		IP      []string         `json:"ip,omitempty"`
+		Perm    okx.APIKeyAccess `json:"perm,omitempty"`
 	}
 	QueryAPIKey struct {
 		APIKey  string `json:"apiKey"`
@@ -40,22 +40,22 @@ type (
 		Ccy     string `json:"ccy,omitempty"`
 	}
 	HistoryTransfer struct {
-		Ccy     string            `json:"ccy,omitempty"`
-		SubAcct string            `json:"subAcct,omitempty"`
-		After   int64             `json:"after,omitempty,string"`
-		Before  int64             `json:"before,omitempty,string"`
-		Limit   int64             `json:"limit,omitempty,string"`
-		Type    okex.TransferType `json:"type,omitempty,string"`
+		Ccy     string           `json:"ccy,omitempty"`
+		SubAcct string           `json:"subAcct,omitempty"`
+		After   int64            `json:"after,omitempty,string"`
+		Before  int64            `json:"before,omitempty,string"`
+		Limit   int64            `json:"limit,omitempty,string"`
+		Type    okx.TransferType `json:"type,omitempty,string"`
 	}
 	ManageTransfers struct {
-		Ccy            string           `json:"ccy"`
-		Amt            float64          `json:"amt,string"`
-		From           okex.AccountType `json:"from,string"`
-		To             okex.AccountType `json:"to,string"`
-		FromSubAccount string           `json:"fromSubAccount"`
-		ToSubAccount   string           `json:"toSubAccount"`
-		LoanTrans      bool             `json:"loanTrans"`
-		OmitPosRisk    string           `json:"omitPosRisk"`
+		Ccy            string          `json:"ccy"`
+		Amt            float64         `json:"amt,string"`
+		From           okx.AccountType `json:"from,string"`
+		To             okx.AccountType `json:"to,string"`
+		FromSubAccount string          `json:"fromSubAccount"`
+		ToSubAccount   string          `json:"toSubAccount"`
+		LoanTrans      bool            `json:"loanTrans"`
+		OmitPosRisk    string          `json:"omitPosRisk"`
 	}
 	ListSubAccount struct {
 		SubAcct string `json:"subAcct,omitempty"`
@@ -71,11 +71,11 @@ type (
 		SubAcct string `json:"subAcct"`
 	}
 	CreatAPIKeySubAccount struct {
-		SubAcct    string            `json:"subAcct"`
-		Label      string            `json:"label"`
-		Passphrase string            `json:"passphrase"`
-		IP         []string          `json:"ip,omitempty"`
-		Perm       okex.APIKeyAccess `json:"perm,omitempty"`
+		SubAcct    string           `json:"subAcct"`
+		Label      string           `json:"label"`
+		Passphrase string           `json:"passphrase"`
+		IP         []string         `json:"ip,omitempty"`
+		Perm       okx.APIKeyAccess `json:"perm,omitempty"`
 	}
 	UpdateAPIKEySubAccount struct {
 		SubAcct string `json:"subAcct"`
@@ -108,11 +108,11 @@ type (
 		EffDate  string `json:"effDate,omitempty"`
 	}
 	CreateDepositAddress struct {
-		SubAcct  string           `json:"subAcct"`
-		Ccy      string           `json:"ccy"`
-		Chain    string           `json:"chain,omitempty"`
-		AddrType string           `json:"addrType,omitempty"` // 1: Regular address, 2:SegWit address (Only applicable to BTC/LTC), Default is 1
-		TO       okex.AccountType `json:"to,string"`          // 6:Funding, 18:Trading account, Default is 6
+		SubAcct  string          `json:"subAcct"`
+		Ccy      string          `json:"ccy"`
+		Chain    string          `json:"chain,omitempty"`
+		AddrType string          `json:"addrType,omitempty"` // 1: Regular address, 2:SegWit address (Only applicable to BTC/LTC), Default is 1
+		TO       okx.AccountType `json:"to,string"`          // 6:Funding, 18:Trading account, Default is 6
 	}
 	UpdateDepositAddress struct {
 		SubAcct  string `json:"subAcct"`

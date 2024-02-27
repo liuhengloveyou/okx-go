@@ -1,7 +1,7 @@
-// Package okex is generally a golang Api wrapper of Okex V5 API
+// Package okx is generally a golang Api wrapper of okx V5 API
 //
-// https://www.okex.com/docs-v5/en
-package okex
+// https://www.okx.com/docs-v5/en
+package okx
 
 import (
 	"encoding/json"
@@ -277,7 +277,7 @@ const (
 	DepositSuccessful          = DepositState(2)
 	DepositTemporarySuspension = DepositState(8)
 
-	WithdrawalOkexDestination           = WithdrawalDestination(3)
+	WithdrawalokxDestination            = WithdrawalDestination(3)
 	WithdrawalDigitalAddressDestination = WithdrawalDestination(4)
 
 	WithdrawalPendingCancel              = WithdrawalState(-3)
