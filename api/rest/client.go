@@ -7,12 +7,12 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/drinkthere/okx"
+	requests "github.com/drinkthere/okx/requests/rest/public"
+	responses "github.com/drinkthere/okx/responses/public_data"
 	"net/http"
 	"strings"
 	"time"
-
-	requests "github.com/drinkthere/okx/requests/rest/public"
-	responses "github.com/drinkthere/okx/responses/public_data"
 )
 
 // ClientRest is the rest api client

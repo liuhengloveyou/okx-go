@@ -2,7 +2,7 @@ package api
 
 import (
 	"context"
-
+	"github.com/drinkthere/okx"
 	"github.com/drinkthere/okx/api/rest"
 	"github.com/drinkthere/okx/api/ws"
 )

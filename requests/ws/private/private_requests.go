@@ -1,5 +1,7 @@
 package private
 
+import "github.com/drinkthere/okx"
+
 type (
 	Account struct {
 		Ccy string `json:"ccy,omitempty"`

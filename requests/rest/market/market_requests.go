@@ -1,5 +1,7 @@
 package market
 
+import "github.com/drinkthere/okx"
+
 type (
 	GetTickers struct {
 		Uly      string             `json:"uly,omitempty"`

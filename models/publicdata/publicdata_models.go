@@ -1,5 +1,7 @@
 package publicdata
 
+import "github.com/drinkthere/okx"
+
 type (
 	Instrument struct {
 		InstID    string              `json:"instId"`

@@ -1,5 +1,7 @@
 package tradedata
 
+import "github.com/drinkthere/okx"
+
 type (
 	GetTakerVolume struct {
 		Ccy      string             `json:"ccy"`

@@ -1,5 +1,7 @@
 package trade
 
+import "github.com/drinkthere/okx"
+
 type (
 	PlaceOrder struct {
 		ID              string           `json:"-"`

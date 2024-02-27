@@ -1,5 +1,7 @@
 package public
 
+import "github.com/drinkthere/okx"
+
 type (
 	Instruments struct {
 		InstType okx.InstrumentType `json:"instType"`

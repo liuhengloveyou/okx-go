@@ -1,5 +1,7 @@
 package subaccount
 
+import "github.com/drinkthere/okx"
+
 type (
 	SubAccount struct {
 		SubAcct     string       `json:"subAcct,omitempty"`

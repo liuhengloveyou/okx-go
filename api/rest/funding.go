@@ -2,11 +2,11 @@ package rest
 
 import (
 	"encoding/json"
-	"net/http"
-	"strings"
-
+	"github.com/drinkthere/okx"
 	requests "github.com/drinkthere/okx/requests/rest/funding"
 	responses "github.com/drinkthere/okx/responses/funding"
+	"net/http"
+	"strings"
 )
 
 // Funding

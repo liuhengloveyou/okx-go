@@ -1,5 +1,7 @@
 package funding
 
+import "github.com/drinkthere/okx"
+
 type (
 	Currency struct {
 		Ccy               string `json:"ccy"`

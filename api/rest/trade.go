@@ -2,10 +2,10 @@ package rest
 
 import (
 	"encoding/json"
-	"net/http"
-
+	"github.com/drinkthere/okx"
 	requests "github.com/drinkthere/okx/requests/rest/trade"
 	responses "github.com/drinkthere/okx/responses/trade"
+	"net/http"
 )
 
 // Trade

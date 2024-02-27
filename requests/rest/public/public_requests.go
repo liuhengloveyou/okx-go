@@ -1,5 +1,7 @@
 package public
 
+import "github.com/drinkthere/okx"
+
 type (
 	GetInstruments struct {
 		Uly      string             `json:"uly,omitempty"`

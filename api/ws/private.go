@@ -2,7 +2,7 @@ package ws
 
 import (
 	"encoding/json"
-
+	"github.com/drinkthere/okx"
 	"github.com/drinkthere/okx/events"
 	"github.com/drinkthere/okx/events/private"
 	requests "github.com/drinkthere/okx/requests/ws/private"

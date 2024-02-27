@@ -1,5 +1,7 @@
 package account
 
+import "github.com/drinkthere/okx"
+
 type (
 	Balance struct {
 		TotalEq     okx.JSONFloat64   `json:"totalEq"`

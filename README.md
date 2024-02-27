@@ -19,7 +19,7 @@ Installation
 -----------------
 
 ```bash
-go get github.com/drinkthere/okx@v1.0.4
+go get github.com/drinkthere/okx@v1.0.5
 ```
 
 Usage

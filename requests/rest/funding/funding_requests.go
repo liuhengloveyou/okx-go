@@ -1,5 +1,7 @@
 package funding
 
+import "github.com/drinkthere/okx"
+
 type (
 	GetBalance struct {
 		Ccy []string `json:"ccy,omitempty"`
