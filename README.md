@@ -19,7 +19,7 @@ Installation
 -----------------
 
 ```bash
-go get github.com/aiviaio/okex@v1.0.5
+go get github.com/drinkthere/okex@v1.0.1
 ```
 
 Usage
