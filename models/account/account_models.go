@@ -214,4 +214,8 @@ type (
 		Ccy   string          `json:"ccy"`
 		MaxWd okx.JSONFloat64 `json:"maxWd"`
 	}
+
+	AutoLoan struct {
+		AutoLoan bool `json:"autoLoan"`
+	}
 )

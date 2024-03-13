@@ -72,6 +72,6 @@ type (
 	}
 	SetAutoLoan struct {
 		responses.Basic
-		AutoLoans []bool `json:"data"`
+		AutoLoans []*models.AutoLoan `json:"data"`
 	}
 )
