@@ -245,6 +245,23 @@ func (c *Account) GetLeverage(req requests.GetLeverage) (response responses.Leve
 	return
 }
 
+// SetAutoLoan
+//
+// https://www.okx.com/docs-v5/zh/#trading-account-rest-api-set-auto-loan
+func (c *Account) SetAutoLoan(req requests.SetAutoLoan) (response responses.SetAutoLoan, err error) {
+	p := "/api/v5/account/set-auto-loan"
+	m := okx.S2M(req)
+	res, err := c.client.Do(http.MethodPost, p, true, m)
+	if err != nil {
+		return
+	}
+	defer res.Body.Close()
+	d := json.NewDecoder(res.Body)
+	err = d.Decode(&response)
+
+	return
+}
+
 // GetMaxLoan
 //
 // https://www.okx.com/docs-v5/en/#rest-api-account-get-the-maximum-loan-of-instrument

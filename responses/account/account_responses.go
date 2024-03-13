@@ -70,4 +70,8 @@ type (
 		responses.Basic
 		MaxWithdrawals []*models.MaxWithdrawal `json:"data"`
 	}
+	SetAutoLoan struct {
+		responses.Basic
+		AutoLoans []bool `json:"data"`
+	}
 )

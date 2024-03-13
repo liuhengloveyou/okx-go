@@ -79,4 +79,7 @@ type (
 	SetGreeks struct {
 		GreeksType okx.GreekType `json:"greeksType"`
 	}
+	SetAutoLoan struct {
+		AutoLoan bool `json:"autoLoan,omitempty"`
+	}
 )
