@@ -185,14 +185,18 @@ type (
 		Side    okx.OrderSide   `json:"side,string"`
 	}
 	Fee struct {
-		Level    string             `json:"level"`
-		Taker    okx.JSONFloat64    `json:"taker"`
-		Maker    okx.JSONFloat64    `json:"maker"`
-		Delivery okx.JSONFloat64    `json:"delivery,omitempty"`
-		Exercise okx.JSONFloat64    `json:"exercise,omitempty"`
-		Category okx.FeeCategory    `json:"category,string"`
-		InstType okx.InstrumentType `json:"instType"`
-		TS       okx.JSONTime       `json:"ts"`
+		Level     string             `json:"level"`
+		Taker     okx.JSONFloat64    `json:"taker"`
+		Maker     okx.JSONFloat64    `json:"maker"`
+		Delivery  okx.JSONFloat64    `json:"delivery,omitempty"`
+		Exercise  okx.JSONFloat64    `json:"exercise,omitempty"`
+		Category  okx.FeeCategory    `json:"category,string"`
+		InstType  okx.InstrumentType `json:"instType"`
+		TakerU    okx.JSONFloat64    `json:"takerU"`
+		MakerU    okx.JSONFloat64    `json:"MakerU"`
+		TakerUSDC okx.JSONFloat64    `json:"takerUSDC"`
+		MakerUSDC okx.JSONFloat64    `json:"makerUSDC"`
+		TS        okx.JSONTime       `json:"ts"`
 	}
 	InterestAccrued struct {
 		InstID       string          `json:"instId"`
