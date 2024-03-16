@@ -82,4 +82,8 @@ type (
 	SetAutoLoan struct {
 		AutoLoan bool `json:"autoLoan,omitempty"`
 	}
+	GetInterestLimits struct {
+		Type string `json:"type,omitempty"`
+		Ccy  string `json:"ccy,omitempty"`
+	}
 )

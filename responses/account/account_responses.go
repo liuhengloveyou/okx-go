@@ -74,4 +74,8 @@ type (
 		responses.Basic
 		AutoLoans []*models.AutoLoan `json:"data"`
 	}
+	GetInterestLimits struct {
+		responses.Basic
+		InterestLimits []*models.InterestLimits `json:"data"`
+	}
 )

@@ -371,3 +371,20 @@ func (c *Account) GetMaxWithdrawals(req requests.GetBalance) (response responses
 
 	return
 }
+
+// GetInterestLimits
+//
+// https://www.okx.com/docs-v5/zh/#trading-account-rest-api-get-borrow-interest-and-limit
+func (c *Account) GetInterestLimits(req requests.GetInterestLimits) (response responses.GetInterestLimits, err error) {
+	p := "/api/v5/account/interest-limits"
+	m := okx.S2M(req)
+	res, err := c.client.Do(http.MethodGet, p, true, m)
+	if err != nil {
+		return
+	}
+	defer res.Body.Close()
+	d := json.NewDecoder(res.Body)
+	err = d.Decode(&response)
+
+	return
+}
