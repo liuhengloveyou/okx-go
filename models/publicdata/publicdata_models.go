@@ -60,7 +60,7 @@ type (
 		NextFundingTime okx.JSONTime       `json:"nextFundingTime"`
 		MinFundingRate  okx.JSONFloat64    `json:"minFundingRate"`
 		MaxFundingRate  okx.JSONFloat64    `json:"maxFundingRate"`
-		SettState       okx.JSONFloat64    `json:"settState"`
+		SettState       string             `json:"settState"`
 		SettFundingRate okx.JSONFloat64    `json:"settFundingRate"`
 		Premium         okx.JSONFloat64    `json:"premium"`
 		Ts              okx.JSONTime       `json:"ts"`
