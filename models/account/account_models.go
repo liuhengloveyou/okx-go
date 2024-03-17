@@ -221,6 +221,9 @@ type (
 	AutoLoan struct {
 		AutoLoan bool `json:"autoLoan"`
 	}
+	AcctLevel struct {
+		AcctLv string `json:"acctLv"`
+	}
 	InterestLimitsRecordDetail struct {
 		AllAcctRemainingQuota okx.JSONFloat64 `json:"allAcctRemainingQuota"`
 		CurAcctRemainingQuota okx.JSONFloat64 `json:"curAcctRemainingQuota,omitempty"`

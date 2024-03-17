@@ -78,4 +78,8 @@ type (
 		responses.Basic
 		InterestLimits []*models.InterestLimits `json:"data"`
 	}
+	SetAccountLevel struct {
+		responses.Basic
+		AccountLevels []*models.AcctLevel `json:"data"`
+	}
 )

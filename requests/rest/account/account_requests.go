@@ -86,4 +86,7 @@ type (
 		Type string `json:"type,omitempty"`
 		Ccy  string `json:"ccy,omitempty"`
 	}
+	SetAccountLevel struct {
+		AcctLv string `json:"acctLv"`
+	}
 )
