@@ -352,7 +352,18 @@ func (c *ClientWs) receiver(p bool) error {
 			mt, data, err := c.conn[p].ReadMessage()
 			if err != nil {
 				c.mu[p].RUnlock()
-				return fmt.Errorf("failed to read message from ws connection, error: %w", err)
+				fmt.Printf("failed to read message from ws connection, error: %v\n", err)
+				// 检查是否为连接关闭的错误，如果是，则尝试重新连接
+				if websocket.IsCloseError(err, websocket.CloseNormalClosure, websocket.CloseGoingAway) {
+					fmt.Println("connection closed, attempting to reconnect...")
+					err = c.Connect(p)
+					if err != nil {
+						fmt.Printf("failed to reconnect: %v\n", err)
+						// 重连失败，可能需要进行额外的错误处理或者等待一段时间后重试
+						time.Sleep(3 * time.Second)
+					}
+				}
+				continue // 继续循环尝试读取消息
 			}
 			c.mu[p].RUnlock()
 
