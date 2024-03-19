@@ -245,6 +245,23 @@ func (c *Account) GetLeverage(req requests.GetLeverage) (response responses.Leve
 	return
 }
 
+// SetAutoLoan
+//
+// https://www.okx.com/docs-v5/zh/#trading-account-rest-api-set-auto-loan
+func (c *Account) SetAutoLoan(req requests.SetAutoLoan) (response responses.SetAutoLoan, err error) {
+	p := "/api/v5/account/set-auto-loan"
+	m := okx.S2M(req)
+	res, err := c.client.Do(http.MethodPost, p, true, m)
+	if err != nil {
+		return
+	}
+	defer res.Body.Close()
+	d := json.NewDecoder(res.Body)
+	err = d.Decode(&response)
+
+	return
+}
+
 // GetMaxLoan
 //
 // https://www.okx.com/docs-v5/en/#rest-api-account-get-the-maximum-loan-of-instrument
@@ -345,6 +362,40 @@ func (c *Account) GetMaxWithdrawals(req requests.GetBalance) (response responses
 		m["ccy"] = strings.Join(req.Ccy, ",")
 	}
 	res, err := c.client.Do(http.MethodGet, p, true, m)
+	if err != nil {
+		return
+	}
+	defer res.Body.Close()
+	d := json.NewDecoder(res.Body)
+	err = d.Decode(&response)
+
+	return
+}
+
+// GetInterestLimits
+//
+// https://www.okx.com/docs-v5/zh/#trading-account-rest-api-get-borrow-interest-and-limit
+func (c *Account) GetInterestLimits(req requests.GetInterestLimits) (response responses.GetInterestLimits, err error) {
+	p := "/api/v5/account/interest-limits"
+	m := okx.S2M(req)
+	res, err := c.client.Do(http.MethodGet, p, true, m)
+	if err != nil {
+		return
+	}
+	defer res.Body.Close()
+	d := json.NewDecoder(res.Body)
+	err = d.Decode(&response)
+
+	return
+}
+
+// SetAccountLevel
+//
+// https://www.okx.com/docs-v5/zh/#trading-account-rest-api-set-account-mode
+func (c *Account) SetAccountLevel(req requests.SetAccountLevel) (response responses.SetAccountLevel, err error) {
+	p := "/api/v5/account/set-account-level"
+	m := okx.S2M(req)
+	res, err := c.client.Do(http.MethodPost, p, true, m)
 	if err != nil {
 		return
 	}

@@ -70,4 +70,16 @@ type (
 		responses.Basic
 		MaxWithdrawals []*models.MaxWithdrawal `json:"data"`
 	}
+	SetAutoLoan struct {
+		responses.Basic
+		AutoLoans []*models.AutoLoan `json:"data"`
+	}
+	GetInterestLimits struct {
+		responses.Basic
+		InterestLimits []*models.InterestLimits `json:"data"`
+	}
+	SetAccountLevel struct {
+		responses.Basic
+		AccountLevels []*models.AcctLevel `json:"data"`
+	}
 )

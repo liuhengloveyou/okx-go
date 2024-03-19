@@ -255,3 +255,19 @@ func (c *PublicData) ConvertUnit(req requests.UnitConvert) (response responses.U
 	err = d.Decode(&response)
 	return
 }
+
+// GetFundingRate
+//
+// https://www.okx.com/docs-v5/zh/#public-data-rest-api-get-funding-rate
+func (c *PublicData) GetFundingRate(req requests.GetFundingRate) (response responses.GetFundingRate, err error) {
+	p := "/api/v5/public/funding-rate"
+	m := okx.S2M(req)
+	res, err := c.client.Do(http.MethodGet, p, false, m)
+	if err != nil {
+		return
+	}
+	defer res.Body.Close()
+	d := json.NewDecoder(res.Body)
+	err = d.Decode(&response)
+	return
+}

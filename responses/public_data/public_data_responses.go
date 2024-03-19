@@ -20,7 +20,7 @@ type (
 	}
 	GetFundingRate struct {
 		responses.Basic
-		FundingRates []*publicdata.FundingRate `json:"data,omitempty"`
+		FundingRates []*publicdata.FundingRateRest `json:"data,omitempty"`
 	}
 	GetLimitPrice struct {
 		responses.Basic

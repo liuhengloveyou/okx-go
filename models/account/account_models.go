@@ -185,14 +185,18 @@ type (
 		Side    okx.OrderSide   `json:"side,string"`
 	}
 	Fee struct {
-		Level    string             `json:"level"`
-		Taker    okx.JSONFloat64    `json:"taker"`
-		Maker    okx.JSONFloat64    `json:"maker"`
-		Delivery okx.JSONFloat64    `json:"delivery,omitempty"`
-		Exercise okx.JSONFloat64    `json:"exercise,omitempty"`
-		Category okx.FeeCategory    `json:"category,string"`
-		InstType okx.InstrumentType `json:"instType"`
-		TS       okx.JSONTime       `json:"ts"`
+		Level     string             `json:"level"`
+		Taker     okx.JSONFloat64    `json:"taker"`
+		Maker     okx.JSONFloat64    `json:"maker"`
+		Delivery  okx.JSONFloat64    `json:"delivery,omitempty"`
+		Exercise  okx.JSONFloat64    `json:"exercise,omitempty"`
+		Category  okx.FeeCategory    `json:"category,string"`
+		InstType  okx.InstrumentType `json:"instType"`
+		TakerU    okx.JSONFloat64    `json:"takerU"`
+		MakerU    okx.JSONFloat64    `json:"MakerU"`
+		TakerUSDC okx.JSONFloat64    `json:"takerUSDC"`
+		MakerUSDC okx.JSONFloat64    `json:"makerUSDC"`
+		TS        okx.JSONTime       `json:"ts"`
 	}
 	InterestAccrued struct {
 		InstID       string          `json:"instId"`
@@ -213,5 +217,37 @@ type (
 	MaxWithdrawal struct {
 		Ccy   string          `json:"ccy"`
 		MaxWd okx.JSONFloat64 `json:"maxWd"`
+	}
+	AutoLoan struct {
+		AutoLoan bool `json:"autoLoan"`
+	}
+	AcctLevel struct {
+		AcctLv string `json:"acctLv"`
+	}
+	InterestLimitsRecordDetail struct {
+		AllAcctRemainingQuota okx.JSONFloat64 `json:"allAcctRemainingQuota"`
+		CurAcctRemainingQuota okx.JSONFloat64 `json:"curAcctRemainingQuota,omitempty"`
+		PlatRemainingQuota    string          `json:"platRemainingQuota"`
+	}
+	InterestLimitsRecord struct {
+		Ccy               string                     `json:"ccy"`
+		Rate              okx.JSONFloat64            `json:"rate"`
+		LoanQuota         okx.JSONFloat64            `json:"loanQuota"`
+		SurplusLmt        okx.JSONFloat64            `json:"surplusLmt"`
+		SurplusLmtDetails InterestLimitsRecordDetail `json:"surplusLmtDetails,omitempty"`
+		UsedLmt           okx.JSONFloat64            `json:"usedLmt"`
+		Interest          okx.JSONFloat64            `json:"interest,omitempty"`
+		PosLoan           okx.JSONFloat64            `json:"posLoan,omitempty"`
+		AvailLoan         okx.JSONFloat64            `json:"availLoan,omitempty"`
+		UsedLoan          okx.JSONFloat64            `json:"usedLoan,omitempty"`
+		AvgRate           okx.JSONFloat64            `json:"avgRate,omitempty"`
+	}
+	InterestLimits struct {
+		Debt             okx.JSONFloat64         `json:"debt"`
+		Interest         okx.JSONFloat64         `json:"interest,omitempty"`
+		NextDiscountTime okx.JSONTime            `json:"nextDiscountTime"`
+		NextInterestTime okx.JSONTime            `json:"nextInterestTime"`
+		LoanAlloc        string                  `json:"loanAlloc"`
+		Records          []*InterestLimitsRecord `json:"records"`
 	}
 )
