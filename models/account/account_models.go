@@ -182,7 +182,7 @@ type (
 		Ccy     string          `json:"ccy"`
 		MaxLoan okx.JSONFloat64 `json:"maxLoan"`
 		MgnMode okx.MarginMode  `json:"mgnMode"`
-		Side    okx.OrderSide   `json:"side,string"`
+		Side    okx.OrderSide   `json:"side"`
 	}
 	Fee struct {
 		Level     string             `json:"level"`
