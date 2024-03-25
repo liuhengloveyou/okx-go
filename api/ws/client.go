@@ -77,12 +77,9 @@ func NewClient(ctx context.Context, apiKey, secretKey, passphrase string, url ma
 //
 // https://www.okx.com/docs-v5/en/#websocket-api-connect
 func (c *ClientWs) Connect(p bool) error {
-	c.mu[p].RLock()
 	if c.conn[p] != nil {
-		c.mu[p].RUnlock()
 		return nil
 	}
-	c.mu[p].RUnlock()
 
 	err := c.dial(p)
 	if err == nil {
