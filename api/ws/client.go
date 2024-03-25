@@ -77,9 +77,12 @@ func NewClient(ctx context.Context, apiKey, secretKey, passphrase string, url ma
 //
 // https://www.okx.com/docs-v5/en/#websocket-api-connect
 func (c *ClientWs) Connect(p bool) error {
+	c.mu[p].RLock()
 	if c.conn[p] != nil {
+		c.mu[p].RUnlock()
 		return nil
 	}
+	c.mu[p].RUnlock()
 
 	err := c.dial(p)
 	if err == nil {
@@ -203,8 +206,9 @@ func (c *ClientWs) Send(p bool, op okx.Operation, args []map[string]string, extr
 		return err
 	}
 
+	c.mu[p].RLock()
 	c.sendChan[p] <- j
-
+	c.mu[p].RUnlock()
 	return nil
 }
 
@@ -326,7 +330,9 @@ func (c *ClientWs) sender(p bool) error {
 			c.mu[p].RLock()
 			if c.conn[p] != nil && (c.lastTransmit[p] == nil || (c.lastTransmit[p] != nil && time.Since(*c.lastTransmit[p]) > PingPeriod)) {
 				go func() {
+					c.mu[p].RLock()
 					c.sendChan[p] <- []byte("ping")
+					c.mu[p].RUnlock()
 				}()
 			}
 
