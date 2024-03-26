@@ -11,6 +11,7 @@ import (
 	"github.com/drinkthere/okx/events"
 	"github.com/gorilla/websocket"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 )
@@ -77,12 +78,9 @@ func NewClient(ctx context.Context, apiKey, secretKey, passphrase string, url ma
 //
 // https://www.okx.com/docs-v5/en/#websocket-api-connect
 func (c *ClientWs) Connect(p bool) error {
-	c.mu[p].RLock()
-	if c.conn[p] != nil {
-		c.mu[p].RUnlock()
+	if c.CheckConnect(p) {
 		return nil
 	}
-	c.mu[p].RUnlock()
 
 	err := c.dial(p)
 	if err == nil {
@@ -103,6 +101,16 @@ func (c *ClientWs) Connect(p bool) error {
 			return c.handleCancel("connect")
 		}
 	}
+}
+
+// CheckConnect into the server
+func (c *ClientWs) CheckConnect(p bool) bool {
+	c.mu[p].RLock()
+	defer c.mu[p].RUnlock()
+	if c.conn[p] != nil {
+		return true
+	}
+	return false
 }
 
 // Login
@@ -268,6 +276,12 @@ func (c *ClientWs) dial(p bool) error {
 		}()
 		err := c.receiver(p)
 		if err != nil {
+			if !strings.Contains(err.Error(), "operation cancelled: receiver") {
+				c.ErrChan <- &events.Error{
+					Event: "error",
+					Msg:   err.Error(),
+				}
+			}
 			fmt.Printf("receiver error: %v\n", err)
 		}
 	}()
@@ -282,6 +296,12 @@ func (c *ClientWs) dial(p bool) error {
 		}()
 		err := c.sender(p)
 		if err != nil {
+			if !strings.Contains(err.Error(), "operation cancelled: sender") {
+				c.ErrChan <- &events.Error{
+					Event: "error",
+					Msg:   err.Error(),
+				}
+			}
 			fmt.Printf("sender error: %v\n", err)
 		}
 	}()
@@ -358,18 +378,7 @@ func (c *ClientWs) receiver(p bool) error {
 			mt, data, err := c.conn[p].ReadMessage()
 			if err != nil {
 				c.mu[p].RUnlock()
-				fmt.Printf("failed to read message from ws connection, error: %v\n", err)
-				// 检查是否为连接关闭的错误，如果是，则尝试重新连接
-				if websocket.IsCloseError(err, websocket.CloseNormalClosure, websocket.CloseGoingAway) {
-					fmt.Println("connection closed, attempting to reconnect...")
-					err = c.Connect(p)
-					if err != nil {
-						fmt.Printf("failed to reconnect: %v\n", err)
-						// 重连失败，可能需要进行额外的错误处理或者等待一段时间后重试
-						time.Sleep(3 * time.Second)
-					}
-				}
-				continue // 继续循环尝试读取消息
+				return fmt.Errorf("failed to read message from ws connection, error: %v\n", err)
 			}
 			c.mu[p].RUnlock()
 
