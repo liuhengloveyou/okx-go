@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -20,12 +21,11 @@ import (
 //
 // https://www.okx.com/docs-v5/en/#websocket-api
 type ClientWs struct {
-	url           map[bool]okx.BaseURL
+	url           sync.Map
 	apiKey        string
 	secretKey     []byte
 	passphrase    string
-	conn          map[bool]*websocket.Conn
-	mu            map[bool]*sync.RWMutex
+	conn          sync.Map
 	ctx           context.Context
 	Cancel        context.CancelFunc
 	DoneChan      chan interface{}
@@ -34,10 +34,10 @@ type ClientWs struct {
 	UnsubscribeCh chan *events.Unsubscribe
 	LoginChan     chan *events.Login
 	SuccessChan   chan *events.Success
-	sendChan      map[bool]chan []byte
-	lastTransmit  map[bool]*time.Time
+	sendChan      sync.Map
+	lastTransmit  sync.Map
 	AuthRequested *time.Time
-	Authorized    bool
+	Authorized    int32 // 0 for false, 1 for true
 	Private       *Private
 	Public        *Public
 	Trade         *Trade
@@ -54,19 +54,20 @@ const (
 func NewClient(ctx context.Context, apiKey, secretKey, passphrase string, url map[bool]okx.BaseURL) *ClientWs {
 	ctx, cancel := context.WithCancel(ctx)
 	c := &ClientWs{
-		url:          url,
-		apiKey:       apiKey,
-		secretKey:    []byte(secretKey),
-		passphrase:   passphrase,
-		conn:         make(map[bool]*websocket.Conn),
-		mu:           map[bool]*sync.RWMutex{true: {}, false: {}},
-		ctx:          ctx,
-		Cancel:       cancel,
-		sendChan:     map[bool]chan []byte{true: make(chan []byte, 3), false: make(chan []byte, 3)},
-		DoneChan:     make(chan interface{}, 32),
-		lastTransmit: make(map[bool]*time.Time),
+		apiKey:     apiKey,
+		secretKey:  []byte(secretKey),
+		passphrase: passphrase,
+		ctx:        ctx,
+		Cancel:     cancel,
+		DoneChan:   make(chan interface{}, 32),
 	}
 
+	c.url.Store(true, url[true])
+	c.url.Store(false, url[false])
+	c.sendChan.Store(true, make(chan []byte, 3))
+	c.sendChan.Store(false, make(chan []byte, 3))
+	c.lastTransmit.Store(true, time.Now())
+	c.lastTransmit.Store(false, time.Now())
 	c.Private = NewPrivate(c)
 	c.Public = NewPublic(c)
 	c.Trade = NewTrade(c)
@@ -105,19 +106,15 @@ func (c *ClientWs) Connect(p bool) error {
 
 // CheckConnect into the server
 func (c *ClientWs) CheckConnect(p bool) bool {
-	c.mu[p].RLock()
-	defer c.mu[p].RUnlock()
-	if c.conn[p] != nil {
-		return true
-	}
-	return false
+	_, ok := c.conn.Load(p)
+	return ok
 }
 
 // Login
 //
 // https://www.okx.com/docs-v5/en/#websocket-api-login
 func (c *ClientWs) Login() error {
-	if c.Authorized {
+	if atomic.LoadInt32(&c.Authorized) == 1 {
 		return nil
 	}
 
@@ -186,15 +183,14 @@ func (c *ClientWs) Unsubscribe(p bool, ch []okx.ChannelName, args map[string]str
 func (c *ClientWs) Send(p bool, op okx.Operation, args []map[string]string, extras ...map[string]string) error {
 	if op != okx.LoginOperation {
 		err := c.Connect(p)
-		if err == nil {
-			if p {
-				err = c.WaitForAuthorization()
-				if err != nil {
-					return err
-				}
-			}
-		} else {
+		if err != nil {
 			return err
+		}
+		if p {
+			err = c.WaitForAuthorization()
+			if err != nil {
+				return err
+			}
 		}
 	}
 
@@ -214,9 +210,9 @@ func (c *ClientWs) Send(p bool, op okx.Operation, args []map[string]string, extr
 		return err
 	}
 
-	c.mu[p].RLock()
-	c.sendChan[p] <- j
-	c.mu[p].RUnlock()
+	sendChanInterface, _ := c.sendChan.Load(p)
+	sendChan := sendChanInterface.(chan []byte)
+	sendChan <- j
 	return nil
 }
 
@@ -231,7 +227,7 @@ func (c *ClientWs) SetChannels(errCh chan *events.Error, subCh chan *events.Subs
 
 // WaitForAuthorization waits for the auth response and try to log in if it was needed
 func (c *ClientWs) WaitForAuthorization() error {
-	if c.Authorized {
+	if atomic.LoadInt32(&c.Authorized) == 1 {
 		return nil
 	}
 
@@ -243,7 +239,7 @@ func (c *ClientWs) WaitForAuthorization() error {
 	defer ticker.Stop()
 
 	for range ticker.C {
-		if c.Authorized {
+		if atomic.LoadInt32(&c.Authorized) == 1 {
 			return nil
 		}
 	}
@@ -252,27 +248,26 @@ func (c *ClientWs) WaitForAuthorization() error {
 }
 
 func (c *ClientWs) dial(p bool) error {
-	c.mu[p].Lock()
-	conn, res, err := websocket.DefaultDialer.Dial(string(c.url[p]), nil)
+	urlInterface, _ := c.url.Load(p)
+	url := urlInterface.(okx.BaseURL)
+
+	conn, res, err := websocket.DefaultDialer.Dial(string(url), nil)
 	if err != nil {
 		var statusCode int
 		if res != nil {
 			statusCode = res.StatusCode
 		}
-
-		c.mu[p].Unlock()
-
 		return fmt.Errorf("error %d: %w", statusCode, err)
 	}
 	defer res.Body.Close()
+
+	c.conn.Store(p, conn)
 
 	go func() {
 		defer func() {
 			// Cleaning the connection with ws
 			c.Cancel()
-			c.mu[p].Lock()
-			c.conn[p].Close()
-			c.mu[p].Unlock()
+			conn.Close()
 		}()
 		err := c.receiver(p)
 		if err != nil {
@@ -281,8 +276,8 @@ func (c *ClientWs) dial(p bool) error {
 					Event: "error",
 					Msg:   err.Error(),
 				}
+				fmt.Printf("receiver error: %v\n", err)
 			}
-			fmt.Printf("receiver error: %v\n", err)
 		}
 	}()
 
@@ -290,9 +285,7 @@ func (c *ClientWs) dial(p bool) error {
 		defer func() {
 			// Cleaning the connection with ws
 			c.Cancel()
-			c.mu[p].Lock()
-			c.conn[p].Close()
-			c.mu[p].Unlock()
+			conn.Close()
 		}()
 		err := c.sender(p)
 		if err != nil {
@@ -301,13 +294,10 @@ func (c *ClientWs) dial(p bool) error {
 					Event: "error",
 					Msg:   err.Error(),
 				}
+				fmt.Printf("sender error: %v\n", err)
 			}
-			fmt.Printf("sender error: %v\n", err)
 		}
 	}()
-
-	c.conn[p] = conn
-	c.mu[p].Unlock()
 
 	return nil
 }
@@ -317,77 +307,69 @@ func (c *ClientWs) sender(p bool) error {
 	defer ticker.Stop()
 
 	for {
-		c.mu[p].RLock()
-		dataChan := c.sendChan[p]
-		c.mu[p].RUnlock()
+		sendChanInterface, _ := c.sendChan.Load(p)
+		sendChan := sendChanInterface.(chan []byte)
+
+		connInterface, _ := c.conn.Load(p)
+		conn := connInterface.(*websocket.Conn)
 
 		select {
-		case data := <-dataChan:
-			c.mu[p].RLock()
-			err := c.conn[p].SetWriteDeadline(time.Now().Add(writeWait))
+		case data := <-sendChan:
+			err := conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if err != nil {
-				c.mu[p].RUnlock()
 				return fmt.Errorf("failed to set write deadline for ws connection, error: %w", err)
 			}
 
-			w, err := c.conn[p].NextWriter(websocket.TextMessage)
+			w, err := conn.NextWriter(websocket.TextMessage)
 			if err != nil {
-				c.mu[p].RUnlock()
 				return fmt.Errorf("failed to get next writer for ws connection, error: %w", err)
 			}
 
 			if _, err = w.Write(data); err != nil {
-				c.mu[p].RUnlock()
 				return fmt.Errorf("failed to write data via ws connection, error: %w", err)
 			}
-
-			c.mu[p].RUnlock()
 
 			if err := w.Close(); err != nil {
 				return fmt.Errorf("failed to close ws connection, error: %w", err)
 			}
 		case <-ticker.C:
-			c.mu[p].RLock()
-			if c.conn[p] != nil && (c.lastTransmit[p] == nil || (c.lastTransmit[p] != nil && time.Since(*c.lastTransmit[p]) > PingPeriod)) {
+			connInterface, _ := c.conn.Load(p)
+			conn := connInterface.(*websocket.Conn)
+			lastTransmitInterface, _ := c.lastTransmit.Load(p)
+			lastTransmit := lastTransmitInterface.(*time.Time)
+			if conn != nil && (lastTransmit == nil || (lastTransmit != nil && time.Since(*lastTransmit) > PingPeriod)) {
 				go func() {
-					c.mu[p].RLock()
-					c.sendChan[p] <- []byte("ping")
-					c.mu[p].RUnlock()
+					sendChan <- []byte("ping")
 				}()
 			}
-
-			c.mu[p].RUnlock()
 		case <-c.ctx.Done():
 			return c.handleCancel("sender")
 		}
 	}
 }
+
 func (c *ClientWs) receiver(p bool) error {
 	for {
 		select {
 		case <-c.ctx.Done():
 			return c.handleCancel("receiver")
 		default:
-			c.mu[p].RLock()
-			err := c.conn[p].SetReadDeadline(time.Now().Add(pongWait))
+			connInterface, _ := c.conn.Load(p)
+			conn := connInterface.(*websocket.Conn)
+			err := conn.SetReadDeadline(time.Now().Add(pongWait))
 			if err != nil {
-				c.mu[p].RUnlock()
 				return fmt.Errorf("failed to set read deadline for ws connection, error: %w", err)
 			}
 
-			mt, data, err := c.conn[p].ReadMessage()
+			_, data, err := conn.ReadMessage()
 			if err != nil {
-				c.mu[p].RUnlock()
 				return fmt.Errorf("failed to read message from ws connection, error: %v\n", err)
 			}
-			c.mu[p].RUnlock()
 
 			now := time.Now()
-			c.mu[p].Lock()
-			c.lastTransmit[p] = &now
-			c.mu[p].Unlock()
+			c.lastTransmit.Store(p, &now)
 
-			if mt == websocket.TextMessage && string(data) != "pong" {
+			if string(data) != "pong" {
 				e := &events.Basic{}
 				if err := json.Unmarshal(data, e); err != nil {
 					return fmt.Errorf("failed to unmarshall message from ws, error: %w", err)
@@ -455,7 +437,7 @@ func (c *ClientWs) process(data []byte, e *events.Basic) bool {
 			break
 		}
 
-		c.Authorized = true
+		atomic.StoreInt32(&c.Authorized, 1)
 
 		e := events.Login{}
 		_ = json.Unmarshal(data, &e)
