@@ -35,7 +35,7 @@ type ClientWs struct {
 	LoginChan     chan *events.Login
 	SuccessChan   chan *events.Success
 	sendChan      map[bool]chan []byte
-	lastTransmit  map[bool]*time.Time
+	lastTransmit  sync.Map
 	AuthRequested *time.Time
 	Authorized    bool
 	Private       *Private
@@ -54,23 +54,23 @@ const (
 func NewClient(ctx context.Context, apiKey, secretKey, passphrase string, url map[bool]okx.BaseURL) *ClientWs {
 	ctx, cancel := context.WithCancel(ctx)
 	c := &ClientWs{
-		url:          url,
-		apiKey:       apiKey,
-		secretKey:    []byte(secretKey),
-		passphrase:   passphrase,
-		conn:         make(map[bool]*websocket.Conn),
-		mu:           map[bool]*sync.RWMutex{true: {}, false: {}},
-		ctx:          ctx,
-		Cancel:       cancel,
-		sendChan:     map[bool]chan []byte{true: make(chan []byte, 3), false: make(chan []byte, 3)},
-		DoneChan:     make(chan interface{}, 32),
-		lastTransmit: make(map[bool]*time.Time),
+		url:        url,
+		apiKey:     apiKey,
+		secretKey:  []byte(secretKey),
+		passphrase: passphrase,
+		conn:       make(map[bool]*websocket.Conn),
+		mu:         map[bool]*sync.RWMutex{true: {}, false: {}},
+		ctx:        ctx,
+		Cancel:     cancel,
+		sendChan:   map[bool]chan []byte{true: make(chan []byte, 3), false: make(chan []byte, 3)},
+		DoneChan:   make(chan interface{}, 32),
 	}
 
 	c.Private = NewPrivate(c)
 	c.Public = NewPublic(c)
 	c.Trade = NewTrade(c)
-
+	c.lastTransmit.Store(true, time.Now())
+	c.lastTransmit.Store(false, time.Now())
 	return c
 }
 
@@ -347,8 +347,10 @@ func (c *ClientWs) sender(p bool) error {
 				return fmt.Errorf("failed to close ws connection, error: %w", err)
 			}
 		case <-ticker.C:
+			lastTransmitInterface, _ := c.lastTransmit.Load(p)
+			lastTransmit := lastTransmitInterface.(*time.Time)
 			c.mu[p].RLock()
-			if c.conn[p] != nil && (c.lastTransmit[p] == nil || (c.lastTransmit[p] != nil && time.Since(*c.lastTransmit[p]) > PingPeriod)) {
+			if c.conn[p] != nil && (lastTransmit == nil || (lastTransmit != nil && time.Since(*lastTransmit) > PingPeriod)) {
 				go func() {
 					c.mu[p].RLock()
 					c.sendChan[p] <- []byte("ping")
@@ -383,9 +385,7 @@ func (c *ClientWs) receiver(p bool) error {
 			c.mu[p].RUnlock()
 
 			now := time.Now()
-			c.mu[p].Lock()
-			c.lastTransmit[p] = &now
-			c.mu[p].Unlock()
+			c.lastTransmit.Store(p, &now)
 
 			if mt == websocket.TextMessage && string(data) != "pong" {
 				e := &events.Basic{}
