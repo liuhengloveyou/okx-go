@@ -69,8 +69,9 @@ func NewClient(ctx context.Context, apiKey, secretKey, passphrase string, url ma
 	c.Private = NewPrivate(c)
 	c.Public = NewPublic(c)
 	c.Trade = NewTrade(c)
-	c.lastTransmit.Store(true, time.Now())
-	c.lastTransmit.Store(false, time.Now())
+	now := time.Now()
+	c.lastTransmit.Store(true, &now)
+	c.lastTransmit.Store(false, &now)
 	return c
 }
 
