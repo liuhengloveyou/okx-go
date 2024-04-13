@@ -57,6 +57,7 @@ type (
 		Pos         okx.JSONFloat64    `json:"pos"`
 		AvailPos    okx.JSONFloat64    `json:"availPos,omitempty"`
 		AvgPx       okx.JSONFloat64    `json:"avgPx"`
+		BePx        okx.JSONFloat64    `json:"bePx"`
 		MarkPx      okx.JSONFloat64    `json:"markPx"`
 		IdxPx       okx.JSONFloat64    `json:"idxPx"`
 		UsdPx       okx.JSONFloat64    `json:"usdPx"`
