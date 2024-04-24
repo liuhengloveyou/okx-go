@@ -304,6 +304,7 @@ func (c *ClientWs) dial(p bool) error {
 				}
 			}
 			fmt.Printf("sender error: %v\n", err)
+			c.Authorized = false
 		}
 	}()
 
