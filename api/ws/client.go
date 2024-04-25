@@ -232,6 +232,16 @@ func (c *ClientWs) SetChannels(errCh chan *events.Error, subCh chan *events.Subs
 	c.SuccessChan = sCh
 }
 
+// SetErrChannel set error channel
+func (c *ClientWs) SetErrChannel(errCh chan *events.Error) {
+	c.ErrChan = errCh
+}
+
+// SetLoginChannel set error channel
+func (c *ClientWs) SetLoginChannel(lCh chan *events.Login) {
+	c.LoginChan = lCh
+}
+
 // WaitForAuthorization waits for the auth response and try to log in if it was needed
 func (c *ClientWs) WaitForAuthorization() error {
 	if c.Authorized {
