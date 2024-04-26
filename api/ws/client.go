@@ -27,6 +27,7 @@ type ClientWs struct {
 	passphrase    string
 	conn          map[bool]*websocket.Conn
 	mu            map[bool]*sync.RWMutex
+	closed        map[bool]bool
 	ctx           context.Context
 	Cancel        context.CancelFunc
 	DoneChan      chan interface{}
@@ -61,6 +62,7 @@ func NewClient(ctx context.Context, apiKey, secretKey, passphrase string, url ma
 		secretKey:  []byte(secretKey),
 		passphrase: passphrase,
 		conn:       make(map[bool]*websocket.Conn),
+		closed:     make(map[bool]bool),
 		mu:         map[bool]*sync.RWMutex{true: {}, false: {}},
 		ctx:        ctx,
 		Cancel:     cancel,
@@ -135,7 +137,7 @@ func (c *ClientWs) Connect(p bool) error {
 func (c *ClientWs) CheckConnect(p bool) bool {
 	c.mu[p].RLock()
 	defer c.mu[p].RUnlock()
-	if c.conn[p] != nil {
+	if c.conn[p] != nil && !c.closed[p] {
 		return true
 	}
 	return false
@@ -257,6 +259,16 @@ func (c *ClientWs) SetChannels(errCh chan *events.Error, subCh chan *events.Subs
 	c.SuccessChan = sCh
 }
 
+// SetErrChannel set error channel
+func (c *ClientWs) SetErrChannel(errCh chan *events.Error) {
+	c.ErrChan = errCh
+}
+
+// SetLoginChannel set error channel
+func (c *ClientWs) SetLoginChannel(lCh chan *events.Login) {
+	c.LoginChan = lCh
+}
+
 // WaitForAuthorization waits for the auth response and try to log in if it was needed
 func (c *ClientWs) WaitForAuthorization() error {
 	if c.Authorized {
@@ -323,6 +335,8 @@ func (c *ClientWs) dial(p bool) error {
 			c.Cancel()
 			c.mu[p].Lock()
 			c.conn[p].Close()
+			c.closed[p] = true
+			fmt.Printf("receiver connection closed\n")
 			c.mu[p].Unlock()
 		}()
 		err := c.receiver(p)
@@ -343,6 +357,8 @@ func (c *ClientWs) dial(p bool) error {
 			c.Cancel()
 			c.mu[p].Lock()
 			c.conn[p].Close()
+			c.closed[p] = true
+			fmt.Printf("sender connection closed\n")
 			c.mu[p].Unlock()
 		}()
 		err := c.sender(p)
@@ -354,10 +370,12 @@ func (c *ClientWs) dial(p bool) error {
 				}
 			}
 			fmt.Printf("sender error: %v\n", err)
+			c.Authorized = false
 		}
 	}()
 
 	c.conn[p] = conn
+	c.closed[p] = false
 	c.mu[p].Unlock()
 
 	return nil
