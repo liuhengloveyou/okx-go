@@ -10,6 +10,7 @@ import (
 	"github.com/drinkthere/okx"
 	"github.com/drinkthere/okx/events"
 	"github.com/gorilla/websocket"
+	"net"
 	"net/http"
 	"strings"
 	"sync"
@@ -41,6 +42,7 @@ type ClientWs struct {
 	Private       *Private
 	Public        *Public
 	Trade         *Trade
+	WithIP        string
 }
 
 const (
@@ -64,6 +66,31 @@ func NewClient(ctx context.Context, apiKey, secretKey, passphrase string, url ma
 		Cancel:     cancel,
 		sendChan:   map[bool]chan []byte{true: make(chan []byte, 3), false: make(chan []byte, 3)},
 		DoneChan:   make(chan interface{}, 32),
+	}
+
+	c.Private = NewPrivate(c)
+	c.Public = NewPublic(c)
+	c.Trade = NewTrade(c)
+	now := time.Now()
+	c.lastTransmit.Store(true, &now)
+	c.lastTransmit.Store(false, &now)
+	return c
+}
+
+func NewClientWithIP(ctx context.Context, apiKey, secretKey, passphrase string, url map[bool]okx.BaseURL, ip string) *ClientWs {
+	ctx, cancel := context.WithCancel(ctx)
+	c := &ClientWs{
+		url:        url,
+		apiKey:     apiKey,
+		secretKey:  []byte(secretKey),
+		passphrase: passphrase,
+		conn:       make(map[bool]*websocket.Conn),
+		mu:         map[bool]*sync.RWMutex{true: {}, false: {}},
+		ctx:        ctx,
+		Cancel:     cancel,
+		sendChan:   map[bool]chan []byte{true: make(chan []byte, 3), false: make(chan []byte, 3)},
+		DoneChan:   make(chan interface{}, 32),
+		WithIP:     ip,
 	}
 
 	c.Private = NewPrivate(c)
@@ -254,7 +281,30 @@ func (c *ClientWs) WaitForAuthorization() error {
 
 func (c *ClientWs) dial(p bool) error {
 	c.mu[p].Lock()
-	conn, res, err := websocket.DefaultDialer.Dial(string(c.url[p]), nil)
+	var dialer websocket.Dialer
+	if c.WithIP != "" {
+		dialer = websocket.Dialer{
+			NetDial: func(network, addr string) (net.Conn, error) {
+				localAddr, err := net.ResolveTCPAddr("tcp", c.WithIP+":0") // 替换为您的出口IP地址
+				if err != nil {
+					return nil, err
+				}
+				d := net.Dialer{
+					LocalAddr: localAddr,
+				}
+				return d.Dial(network, addr)
+			},
+			HandshakeTimeout:  45 * time.Second,
+			EnableCompression: false,
+		}
+	} else {
+		dialer = websocket.Dialer{
+			Proxy:             http.ProxyFromEnvironment,
+			HandshakeTimeout:  45 * time.Second,
+			EnableCompression: false,
+		}
+	}
+	conn, res, err := dialer.Dial(string(c.url[p]), nil)
 	if err != nil {
 		var statusCode int
 		if res != nil {

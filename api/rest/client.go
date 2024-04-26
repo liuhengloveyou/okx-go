@@ -2,6 +2,7 @@ package rest
 
 import (
 	"bytes"
+	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
@@ -10,6 +11,8 @@ import (
 	"github.com/drinkthere/okx"
 	requests "github.com/drinkthere/okx/requests/rest/public"
 	responses "github.com/drinkthere/okx/responses/public_data"
+	"log"
+	"net"
 	"net/http"
 	"strings"
 	"time"
@@ -41,6 +44,48 @@ func NewClient(apiKey, secretKey, passphrase string, baseURL okx.BaseURL, destin
 		baseURL:     baseURL,
 		destination: destination,
 		Client:      http.DefaultClient,
+	}
+	c.Account = NewAccount(c)
+	c.SubAccount = NewSubAccount(c)
+	c.Trade = NewTrade(c)
+	c.Funding = NewFunding(c)
+	c.Market = NewMarket(c)
+	c.PublicData = NewPublicData(c)
+	c.TradeData = NewTradeData(c)
+	return c
+}
+
+// NewClient returns a pointer to a fresh ClientRest
+func NewClientWithIP(apiKey, secretKey, passphrase string, baseURL okx.BaseURL, destination okx.Destination, ip string) *ClientRest {
+	parsedIP := net.ParseIP(ip)
+	if parsedIP == nil {
+		log.Fatalf("spot NewClientWithIP ip=%s is invalid", ip)
+	}
+
+	dialer := &net.Dialer{
+		LocalAddr: &net.TCPAddr{
+			IP:   parsedIP, // 设置本地出口 IP 地址
+			Port: 0,        // 0 表示随机端口
+		},
+		Timeout:   30 * time.Second,
+		KeepAlive: 30 * time.Second,
+	}
+
+	transport := &http.Transport{
+		DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
+			return dialer.DialContext(ctx, network, addr)
+		},
+	}
+
+	c := &ClientRest{
+		apiKey:      apiKey,
+		secretKey:   []byte(secretKey),
+		passphrase:  passphrase,
+		baseURL:     baseURL,
+		destination: destination,
+		Client: &http.Client{
+			Transport: transport,
+		},
 	}
 	c.Account = NewAccount(c)
 	c.SubAccount = NewSubAccount(c)
