@@ -77,11 +77,16 @@ const (
 	OmegaPublicWsURL  = BaseURL("wss://ws.okx.com:8443/ws/v5/public?brokerId=200")
 	OmegaPrivateWsURL = BaseURL("wss://ws.okx.com:8443/ws/v5/private?brokerId=200")
 
+	ColoRestURL      = BaseURL("https://coloapi1.okx.com")
+	ColoPublicWsURL  = BaseURL("wss://colows1.okx.com/ws/v5/public")
+	ColoPrivateWsURL = BaseURL("wss://colows1.okx.com/ws/v5/private")
+
 	NormalServer   = Destination(iota + 1)
 	AwsServer      = NormalServer + 1
 	DemoServer     = AwsServer + 1
 	OmegaServer    = DemoServer + 1
 	BusinessServer = OmegaServer + 1
+	ColoServer     = BusinessServer
 
 	SpotInstrument    = InstrumentType("SPOT")
 	MarginInstrument  = InstrumentType("MARGIN")
