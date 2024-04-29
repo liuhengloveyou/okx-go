@@ -32,6 +32,10 @@ func NewClient(ctx context.Context, apiKey, secretKey, passphrase string, destin
 		restURL = okx.OmegaRestURL
 		wsPubURL = okx.OmegaPublicWsURL
 		wsPriURL = okx.OmegaPrivateWsURL
+	case okx.ColoServer:
+		restURL = okx.ColoRestURL
+		wsPubURL = okx.ColoPublicWsURL
+		wsPriURL = okx.ColoPrivateWsURL
 	case okx.BusinessServer:
 		restURL = okx.RestURL
 		wsPubURL = okx.BusinessWsURL
