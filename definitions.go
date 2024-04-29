@@ -86,7 +86,7 @@ const (
 	DemoServer     = AwsServer + 1
 	OmegaServer    = DemoServer + 1
 	BusinessServer = OmegaServer + 1
-	ColoServer     = BusinessServer
+	ColoServer     = BusinessServer + 1
 
 	SpotInstrument    = InstrumentType("SPOT")
 	MarginInstrument  = InstrumentType("MARGIN")
