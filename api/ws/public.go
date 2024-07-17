@@ -540,7 +540,7 @@ func (c *Public) Process(data []byte, e *events.Basic) bool {
 				return true
 			}
 			// order book channels
-			if strings.Contains(chName, "books") {
+			if strings.Contains(chName, "books") || chName == "bbo-tbt" {
 				e := public.OrderBook{}
 				err := json.Unmarshal(data, &e)
 				if err != nil {
