@@ -3,6 +3,10 @@ package private
 import "github.com/drinkthere/okx"
 
 type (
+	OrderBook struct {
+		InstID  string `json:"instId"`
+		Channel string `json:"channel"`
+	}
 	Account struct {
 		Ccy string `json:"ccy,omitempty"`
 	}

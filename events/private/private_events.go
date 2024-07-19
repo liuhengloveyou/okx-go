@@ -3,10 +3,16 @@ package private
 import (
 	"github.com/drinkthere/okx/events"
 	"github.com/drinkthere/okx/models/account"
+	"github.com/drinkthere/okx/models/market"
 	"github.com/drinkthere/okx/models/trade"
 )
 
 type (
+	OrderBook struct {
+		Arg    *events.Argument      `json:"arg"`
+		Action string                `json:"action"`
+		Books  []*market.OrderBookWs `json:"data"`
+	}
 	Account struct {
 		Arg      *events.Argument   `json:"arg"`
 		Balances []*account.Balance `json:"data"`

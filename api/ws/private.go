@@ -13,6 +13,7 @@ import (
 // https://www.okx.com/docs-v5/en/#websocket-api-private-channel
 type Private struct {
 	*ClientWs
+	obCh  chan *private.OrderBook
 	aCh   chan *private.Account
 	pCh   chan *private.Position
 	bnpCh chan *private.BalanceAndPosition
@@ -24,6 +25,32 @@ type Private struct {
 // NewPrivate returns a pointer to a fresh Private
 func NewPrivate(c *ClientWs) *Private {
 	return &Private{ClientWs: c}
+}
+
+// OrderBook
+// Retrieve private order book data.
+//
+// Use booksbooks50-l2-tbt tick-by-tick 50 depth levels, and books-l2-tbt for tick-by-tick 400 depth levels.
+// These channel needs login
+//
+// https://www.okx.com/docs-v5/en/#websocket-api-public-channels-order-book-channel
+func (c *Private) OrderBook(req requests.OrderBook, ch ...chan *private.OrderBook) error {
+	m := okx.S2M(req)
+	if len(ch) > 0 {
+		c.obCh = ch[0]
+	}
+	return c.Subscribe(false, []okx.ChannelName{}, m)
+}
+
+// UOrderBook
+//
+// https://www.okx.com/docs-v5/en/#websocket-api-public-channels-order-book-channel
+func (c *Private) UOrderBook(req requests.OrderBook, rCh ...bool) error {
+	m := okx.S2M(req)
+	if len(rCh) > 0 && rCh[0] {
+		c.obCh = nil
+	}
+	return c.Unsubscribe(false, []okx.ChannelName{okx.ChannelName(req.Channel)}, m)
 }
 
 // Account
