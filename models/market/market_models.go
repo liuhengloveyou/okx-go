@@ -45,7 +45,7 @@ type (
 	OrderBookWs struct {
 		Asks      []*OrderBookEntity `json:"asks"`
 		Bids      []*OrderBookEntity `json:"bids"`
-		Checksum  uint32             `json:"checksum"`
+		Checksum  int32              `json:"checksum"`
 		TS        okx.JSONTime       `json:"ts"`
 		PrevSeqID int64              `json:"prevSeqId"`
 		SeqID     int64              `json:"seqId"`
