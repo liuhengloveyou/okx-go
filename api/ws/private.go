@@ -39,7 +39,7 @@ func (c *Private) OrderBook(req requests.OrderBook, ch ...chan *private.OrderBoo
 	if len(ch) > 0 {
 		c.obCh = ch[0]
 	}
-	return c.Subscribe(false, []okx.ChannelName{}, m)
+	return c.Subscribe(true, []okx.ChannelName{}, m)
 }
 
 // UOrderBook
@@ -50,7 +50,7 @@ func (c *Private) UOrderBook(req requests.OrderBook, rCh ...bool) error {
 	if len(rCh) > 0 && rCh[0] {
 		c.obCh = nil
 	}
-	return c.Unsubscribe(false, []okx.ChannelName{okx.ChannelName(req.Channel)}, m)
+	return c.Unsubscribe(true, []okx.ChannelName{okx.ChannelName(req.Channel)}, m)
 }
 
 // Account
