@@ -2,10 +2,12 @@ package ws
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/drinkthere/okx"
 	"github.com/drinkthere/okx/events"
 	"github.com/drinkthere/okx/events/private"
 	requests "github.com/drinkthere/okx/requests/ws/private"
+	"strings"
 )
 
 // Private
@@ -270,7 +272,22 @@ func (c *Private) Process(data []byte, e *events.Basic) bool {
 				}
 			}()
 			return true
+
+		default:
+			chName := fmt.Sprint(ch)
+			if strings.Contains(chName, "books") {
+				e := private.OrderBook{}
+				err := json.Unmarshal(data, &e)
+				if err != nil {
+					return false
+				}
+				if c.obCh != nil {
+					c.obCh <- &e
+				}
+				return true
+			}
 		}
+
 	}
 	return false
 }
