@@ -245,6 +245,15 @@ func (c *ClientWs) Send(p bool, op okx.Operation, args []map[string]string, extr
 		return err
 	}
 
+	channelValue := ""
+	if len(args) > 0 {
+		if val, ok := args[0]["channel"]; ok {
+			channelValue = val
+		}
+	}
+	if strings.Contains(channelValue, "books") && p == true {
+		p = false
+	}
 	c.mu[p].RLock()
 	c.sendChan[p] <- j
 	c.mu[p].RUnlock()
