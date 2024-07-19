@@ -41,7 +41,7 @@ func (c *Private) OrderBook(req requests.OrderBook, ch ...chan *private.OrderBoo
 	if len(ch) > 0 {
 		c.obCh = ch[0]
 	}
-	return c.Subscribe(true, []okx.ChannelName{}, m)
+	return c.Subscribe(true, []okx.ChannelName{okx.ChannelName(req.Channel)}, m)
 }
 
 // UOrderBook
@@ -287,7 +287,6 @@ func (c *Private) Process(data []byte, e *events.Basic) bool {
 				return true
 			}
 		}
-
 	}
 	return false
 }
