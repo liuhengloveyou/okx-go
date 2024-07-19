@@ -544,6 +544,7 @@ func (c *Public) Process(data []byte, e *events.Basic) bool {
 				e := public.OrderBook{}
 				err := json.Unmarshal(data, &e)
 				if err != nil {
+					fmt.Println(err.Error())
 					return false
 				}
 				if c.obCh != nil {
