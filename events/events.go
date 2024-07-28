@@ -57,6 +57,10 @@ func (a *Argument) Get(k string) (interface{}, bool) {
 	return v, ok
 }
 
+func (a *Argument) Set(k string, v interface{}) {
+	a.arg[k] = v
+}
+
 func (a *Argument) UnmarshalJSON(buf []byte) error {
 	a.arg = make(map[string]interface{})
 
