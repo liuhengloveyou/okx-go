@@ -386,46 +386,36 @@ func (c *ClientWs) sender(p bool) error {
 	ticker := time.NewTicker(time.Millisecond * 300)
 	defer ticker.Stop()
 
-	var chanError error
 	for {
-		if chanError != nil {
-			break
-		}
 		c.mu[p].RLock()
 		dataChan := c.sendChan[p]
 		c.mu[p].RUnlock()
 
 		select {
 		case data := <-dataChan:
-			go func() {
-				c.mu[p].RLock()
-				err := c.conn[p].SetWriteDeadline(time.Now().Add(writeWait))
-				if err != nil {
-					c.mu[p].RUnlock()
-					chanError = fmt.Errorf("failed to set write deadline for ws connection, error: %w", err)
-					return
-				}
-
-				w, err := c.conn[p].NextWriter(websocket.TextMessage)
-				if err != nil {
-					c.mu[p].RUnlock()
-					chanError = fmt.Errorf("failed to get next writer for ws connection, error: %w", err)
-					return
-				}
-
-				if _, err = w.Write(data); err != nil {
-					c.mu[p].RUnlock()
-					chanError = fmt.Errorf("failed to write data via ws connection, error: %w", err)
-					return
-				}
-
+			c.mu[p].RLock()
+			err := c.conn[p].SetWriteDeadline(time.Now().Add(writeWait))
+			if err != nil {
 				c.mu[p].RUnlock()
+				return fmt.Errorf("failed to set write deadline for ws connection, error: %w", err)
+			}
 
-				if err := w.Close(); err != nil {
-					chanError = fmt.Errorf("failed to close ws connection, error: %w", err)
-					return
-				}
-			}()
+			w, err := c.conn[p].NextWriter(websocket.TextMessage)
+			if err != nil {
+				c.mu[p].RUnlock()
+				return fmt.Errorf("failed to get next writer for ws connection, error: %w", err)
+			}
+
+			if _, err = w.Write(data); err != nil {
+				c.mu[p].RUnlock()
+				return fmt.Errorf("failed to write data via ws connection, error: %w", err)
+			}
+
+			c.mu[p].RUnlock()
+
+			if err := w.Close(); err != nil {
+				return fmt.Errorf("failed to close ws connection, error: %w", err)
+			}
 		case <-ticker.C:
 			lastTransmitInterface, _ := c.lastTransmit.Load(p)
 			lastTransmit := lastTransmitInterface.(*time.Time)
@@ -443,7 +433,6 @@ func (c *ClientWs) sender(p bool) error {
 			return c.handleCancel("sender")
 		}
 	}
-	return chanError
 }
 func (c *ClientWs) receiver(p bool) error {
 	for {
