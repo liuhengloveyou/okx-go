@@ -42,4 +42,12 @@ type (
 		responses.Basic
 		AlgoOrders []*trade.AlgoOrder `json:"data"`
 	}
+	EasyConvertCurrencyList struct {
+		responses.Basic
+		ListResult []*trade.EasyConvertListResult `json:"data"`
+	}
+	EasyConvert struct {
+		responses.Basic
+		ConvertResult []*trade.EasyConvertProcess `json:"data"`
+	}
 )

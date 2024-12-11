@@ -1,6 +1,9 @@
 package trade
 
-import "github.com/drinkthere/okx"
+import (
+	"github.com/drinkthere/okx"
+	"github.com/drinkthere/okx/models/trade"
+)
 
 type (
 	PlaceOrder struct {
@@ -134,5 +137,15 @@ type (
 		Limit    float64            `json:"limit,omitempty,string"`
 		OrdType  okx.AlgoOrderType  `json:"ordType,omitempty"`
 		State    okx.OrderState     `json:"state,omitempty"`
+	}
+
+	EasyConvertCurrencyList struct {
+		Source trade.EasyConvertSource `json:"source,omitempty"`
+	}
+
+	EasyConvert struct {
+		FromCcy []string                `json:"fromCcy"`
+		ToCcy   string                  `json:"toCcy"`
+		Source  trade.EasyConvertSource `json:"source,omitempty"`
 	}
 )

@@ -304,3 +304,30 @@ func (c *Trade) GetAlgoOrderList(req requests.AlgoOrderList, arch bool) (respons
 
 	return
 }
+
+func (c *Trade) GetEasyConvertCurrencyList(req requests.EasyConvertCurrencyList) (response responses.EasyConvertCurrencyList, err error) {
+	p := "/api/v5/trade/easy-convert-currency-list"
+	m := okx.S2M(req)
+	res, err := c.client.Do(http.MethodGet, p, true, m)
+	if err != nil {
+		return
+	}
+	defer res.Body.Close()
+	d := json.NewDecoder(res.Body)
+	err = d.Decode(&response)
+	return
+}
+
+func (c *Trade) EasyConvert(req requests.EasyConvert) (response responses.EasyConvert, err error) {
+	p := "/api/v5/trade/easy-convert"
+	m := okx.S2M(req)
+	res, err := c.client.Do(http.MethodPost, p, true, m)
+	if err != nil {
+		return
+	}
+	defer res.Body.Close()
+	d := json.NewDecoder(res.Body)
+	err = d.Decode(&response)
+	return
+
+}

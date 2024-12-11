@@ -148,4 +148,25 @@ type (
 		CTime           okx.JSONTime       `json:"cTime"`
 		TriggerTime     okx.JSONTime       `json:"triggerTime"`
 	}
+	FromData struct {
+		Ccy    string          `json:"fromCcy"`
+		Amount okx.JSONFloat64 `json:"fromAmt""`
+	}
+	EasyConvertListResult struct {
+		FromData []FromData `json:"fromData"`
+		ToCcy    []string   `json:"toCcy"`
+	}
+	EasyConvertProcess struct {
+		FromCcy    string          `json:"fromCcy"`
+		ToCcy      string          `json:"toCcy"`
+		FillFromSz okx.JSONFloat64 `json:"fillFromSz"`
+		FillToSz   okx.JSONFloat64 `json:"fillToSz"`
+		Status     string          `json:"status"`
+		UpdateTime okx.JSONTime    `json:"uTime"`
+	}
 )
+
+type EasyConvertSource string
+
+const EasyConvertSourceFunding = EasyConvertSource("1")
+const EasyConvertSourceTrading = EasyConvertSource("2")
