@@ -144,7 +144,7 @@ type (
 	}
 
 	EasyConvert struct {
-		FromCcy string                  `json:"fromCcy"`
+		FromCcy []string                `json:"fromCcy"`
 		ToCcy   string                  `json:"toCcy"`
 		Source  trade.EasyConvertSource `json:"source,omitempty"`
 	}

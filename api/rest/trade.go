@@ -6,6 +6,7 @@ import (
 	requests "github.com/drinkthere/okx/requests/rest/trade"
 	responses "github.com/drinkthere/okx/responses/trade"
 	"net/http"
+	"strings"
 )
 
 // Trade
@@ -321,6 +322,9 @@ func (c *Trade) GetEasyConvertCurrencyList(req requests.EasyConvertCurrencyList)
 func (c *Trade) EasyConvert(req requests.EasyConvert) (response responses.EasyConvert, err error) {
 	p := "/api/v5/trade/easy-convert"
 	m := okx.S2M(req)
+	if req.FromCcy != nil && len(req.FromCcy) > 0 {
+		m["fromCcy"] = strings.Join(req.FromCcy, ",")
+	}
 	res, err := c.client.Do(http.MethodPost, p, true, m)
 	if err != nil {
 		return
