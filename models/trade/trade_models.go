@@ -168,5 +168,5 @@ type (
 
 type EasyConvertSource string
 
-const EasyConvertSourceFunding = EasyConvertSource("1")
-const EasyConvertSourceTrading = EasyConvertSource("2")
+const EasyConvertSourceFunding = EasyConvertSource("2")
+const EasyConvertSourceTrading = EasyConvertSource("1")
