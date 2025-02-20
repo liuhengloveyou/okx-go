@@ -36,6 +36,10 @@ func NewClient(ctx context.Context, apiKey, secretKey, passphrase string, destin
 		restURL = okx.ColoRestURL
 		wsPubURL = okx.ColoPublicWsURL
 		wsPriURL = okx.ColoPrivateWsURL
+	case okx.ColoDServer:
+		restURL = okx.ColoDRestURL
+		wsPubURL = okx.ColoDPublicWsURL
+		wsPriURL = okx.ColoDPrivateWsURL
 	case okx.BusinessServer:
 		restURL = okx.RestURL
 		wsPubURL = okx.BusinessWsURL
@@ -70,6 +74,10 @@ func NewClientWithIP(ctx context.Context, apiKey, secretKey, passphrase string, 
 		restURL = okx.ColoRestURL
 		wsPubURL = okx.ColoPublicWsURL
 		wsPriURL = okx.ColoPrivateWsURL
+	case okx.ColoDServer:
+		restURL = okx.ColoDRestURL
+		wsPubURL = okx.ColoDPublicWsURL
+		wsPriURL = okx.ColoDPrivateWsURL
 	case okx.BusinessServer:
 		restURL = okx.RestURL
 		wsPubURL = okx.BusinessWsURL

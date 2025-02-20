@@ -81,12 +81,17 @@ const (
 	ColoPublicWsURL  = BaseURL("wss://colows1.okx.com/ws/v5/public")
 	ColoPrivateWsURL = BaseURL("wss://colows1.okx.com/ws/v5/private")
 
+	ColoDRestURL      = BaseURL("https://coloapi3.okx.com") // rest暂时没有新的d区的服务
+	ColoDPublicWsURL  = BaseURL("wss://colows-d.okx.com/ws/v5/public")
+	ColoDPrivateWsURL = BaseURL("wss://colows-d.okx.com/ws/v5/private")
+
 	NormalServer   = Destination(iota + 1)
 	AwsServer      = NormalServer + 1
 	DemoServer     = AwsServer + 1
 	OmegaServer    = DemoServer + 1
 	BusinessServer = OmegaServer + 1
 	ColoServer     = BusinessServer + 1
+	ColoDServer    = ColoServer + 1
 
 	SpotInstrument    = InstrumentType("SPOT")
 	MarginInstrument  = InstrumentType("MARGIN")
