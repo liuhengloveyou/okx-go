@@ -3,11 +3,12 @@ package ws
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/drinkthere/okx"
-	"github.com/drinkthere/okx/events"
-	"github.com/drinkthere/okx/events/public"
-	requests "github.com/drinkthere/okx/requests/ws/public"
 	"strings"
+
+	"github.com/liuhengloveyou/okx-go"
+	"github.com/liuhengloveyou/okx-go/events"
+	"github.com/liuhengloveyou/okx-go/events/public"
+	requests "github.com/liuhengloveyou/okx-go/requests/ws/public"
 )
 
 // Public
@@ -252,7 +253,7 @@ func (c *Public) UPriceLimit(req requests.PriceLimit, rCh ...bool) error {
 //
 // Use books for 400 depth levels, book5 for 5 depth levels, books50-l2-tbt tick-by-tick 50 depth levels, and books-l2-tbt for tick-by-tick 400 depth levels.
 //
-// https://www.okx.com/docs-v5/en/#websocket-api-public-channels-order-book-channel
+// https://www.okx.com/docs-v5/zh/#order-book-trading-market-data-ws-order-book-channel
 func (c *Public) OrderBook(req requests.OrderBook, ch ...chan *public.OrderBook) error {
 	m := okx.S2M(req)
 	if len(ch) > 0 {

@@ -2,10 +2,10 @@ package ws
 
 import (
 	"encoding/json"
-	"github.com/drinkthere/okx"
-	"github.com/drinkthere/okx/events"
-	"github.com/drinkthere/okx/events/private"
-	requests "github.com/drinkthere/okx/requests/ws/private"
+	"github.com/liuhengloveyou/okx-go"
+	"github.com/liuhengloveyou/okx-go/events"
+	"github.com/liuhengloveyou/okx-go/events/private"
+	requests "github.com/liuhengloveyou/okx-go/requests/ws/private"
 )
 
 // Private

@@ -1,8 +1,8 @@
 package public_data
 
 import (
-	"github.com/drinkthere/okx/models/publicdata"
-	"github.com/drinkthere/okx/responses"
+	"github.com/liuhengloveyou/okx-go/models/publicdata"
+	"github.com/liuhengloveyou/okx-go/responses"
 )
 
 type (

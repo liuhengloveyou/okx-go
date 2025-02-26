@@ -2,9 +2,9 @@ package api
 
 import (
 	"context"
-	"github.com/drinkthere/okx"
-	"github.com/drinkthere/okx/api/rest"
-	"github.com/drinkthere/okx/api/ws"
+	"github.com/liuhengloveyou/okx-go"
+	"github.com/liuhengloveyou/okx-go/api/rest"
+	"github.com/liuhengloveyou/okx-go/api/ws"
 )
 
 // Client is the main api wrapper of okx

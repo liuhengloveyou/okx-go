@@ -1,8 +1,8 @@
 package trade
 
 import (
-	"github.com/drinkthere/okx"
-	"github.com/drinkthere/okx/models/trade"
+	"github.com/liuhengloveyou/okx-go"
+	"github.com/liuhengloveyou/okx-go/models/trade"
 )
 
 type (

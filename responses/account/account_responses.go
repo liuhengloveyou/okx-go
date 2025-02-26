@@ -1,8 +1,8 @@
 package account
 
 import (
-	models "github.com/drinkthere/okx/models/account"
-	"github.com/drinkthere/okx/responses"
+	models "github.com/liuhengloveyou/okx-go/models/account"
+	"github.com/liuhengloveyou/okx-go/responses"
 )
 
 type (

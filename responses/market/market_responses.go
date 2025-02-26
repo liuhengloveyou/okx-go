@@ -1,8 +1,8 @@
 package market
 
 import (
-	"github.com/drinkthere/okx/models/market"
-	"github.com/drinkthere/okx/responses"
+	"github.com/liuhengloveyou/okx-go/models/market"
+	"github.com/liuhengloveyou/okx-go/responses"
 )
 
 type (

@@ -1,8 +1,8 @@
 package ws
 
 import (
-	"github.com/drinkthere/okx"
-	requests "github.com/drinkthere/okx/requests/rest/trade"
+	"github.com/liuhengloveyou/okx-go"
+	requests "github.com/liuhengloveyou/okx-go/requests/rest/trade"
 )
 
 // Trade

@@ -1,8 +1,8 @@
 package funding
 
 import (
-	models "github.com/drinkthere/okx/models/funding"
-	"github.com/drinkthere/okx/responses"
+	models "github.com/liuhengloveyou/okx-go/models/funding"
+	"github.com/liuhengloveyou/okx-go/responses"
 )
 
 type (

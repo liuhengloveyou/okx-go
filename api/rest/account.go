@@ -2,12 +2,12 @@ package rest
 
 import (
 	"encoding/json"
-	"github.com/drinkthere/okx"
+	"github.com/liuhengloveyou/okx-go"
 	"net/http"
 	"strings"
 
-	requests "github.com/drinkthere/okx/requests/rest/account"
-	responses "github.com/drinkthere/okx/responses/account"
+	requests "github.com/liuhengloveyou/okx-go/requests/rest/account"
+	responses "github.com/liuhengloveyou/okx-go/responses/account"
 )
 
 // Account

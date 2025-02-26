@@ -1,6 +1,6 @@
 package publicdata
 
-import "github.com/drinkthere/okx"
+import "github.com/liuhengloveyou/okx-go"
 
 type (
 	Instrument struct {
